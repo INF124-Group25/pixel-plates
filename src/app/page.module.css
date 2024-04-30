@@ -5,6 +5,7 @@
   align-items: center;
   padding: 6rem;
   min-height: 100vh;
+  font-family: var(--font-mono);
 }
 
 .description {
@@ -227,4 +228,15 @@
   to {
     transform: rotate(0deg);
   }
+}
+
+
+
+.main-heading {
+  margin-block: 1rem;
+}
+.main-image {
+  max-width: 612px;
+  width: 100%;
+  padding-inline: 1rem;
 }
