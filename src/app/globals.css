@@ -38,7 +38,10 @@
   --card-border-rgb: 131, 134, 135;
   --bg-violet-300: rgb(196 181 253);
 
+  --dark-yellow: #FF9F59;
+  --light-yellow: #F7C961;
   --bg-yellow-gradient: linear-gradient(#FF9F59, #F7C961);
+  --nav-yellow-gradient: linear-gradient(to right, #FF9F59 31%, #F7C961 100%);
 
   /* starts at very-small-screen */
   --small-screen: 640px;
@@ -47,15 +50,15 @@
 
   --font-size: 16px;
   @media (min-width: 640px) {
-    --font-size: 18px;
+    --font-size: 17px;
   }
   
   @media (min-width: 768px) {
-    --font-size: 20px;
+    --font-size: 18px;
   }
   
   @media (min-width: 1024px) {
-    --font-size: 22px;
+    --font-size: 19px;
   }
 }
 
@@ -126,11 +129,16 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column; 
+  justify-content: space-between;
   place-items: center; 
   /* min-width: 320px; */
   min-height: 100vh;
 }
-
+main {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+}
 
 
 h1 {

@@ -19,7 +19,7 @@ export default function Login() {
                     />
                     <button className={styles.loginButton}>Log In</button>
                     <div className={styles.signupLink}>
-                        <p>Don&apos;t have an account? <br /> <a href="/signup">Make one!</a></p>
+                        <p>Don&apos;t have an account? <br /> <a href="/register">Make one!</a></p>
                     </div>
                     <div className={styles.loginLogoBox}>
                         <Image src="/egg.png" alt="egg" className={styles.loginLogo} width={100} height={100}/>
