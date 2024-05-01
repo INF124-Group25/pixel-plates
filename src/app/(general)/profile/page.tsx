@@ -1,69 +1,49 @@
 import styles from "./page.module.css";
 import Image from "next/image";
+import Link from "next/link";
 
-const Profile = () => {
+const ProfilePage = () => {
     const name = "JonnieEats";
-    const description = "Follow my account for more finds in OC!";
-    const imageSrc = "/default-user.png";
-    const password = "password";
+    const postName = "Cha For Tea - University Town Center";
+    const postId = "OxLseuNd";
+    const postImage = "/popcorn-chicken.png";
 
-
-    const editProfileForm = async(formData: FormData) => {
-      'use server'
-      const rawFormData = {
-
-      };
-
-      // mutate data
-      // revalidate cache
+    type posts = {
+        name: string;
+        imageSrc: string;
     };
+    const postImages: posts[] = new Array(24).fill({
+        name: postName,
+        imageSrc: postImage,
+    });
 
     return (
-        <main className={styles.profile}>
-            <section className={styles.profileNav}>
-                <div className={styles.profileNavFirsttwocontainer}>
-                  <div className={styles.profileNavInfo}>
-                      <Image
-                          src={imageSrc}
-                          alt="default user"
-                          width={125}
-                          height={125}
-                      />
-                      <h3>{name}</h3>
-                      <p>{description}</p>
-                  </div>
-                  <div className={styles.profileNavButtons}>
-                      <button>Edit Profile</button>
-                      <button>View Profile</button>
-                      <button>View Following</button>
-                  </div>
+        <div className={styles.profile}>
+            <h1>{name}</h1>
+            {postImages && postImages.length > 0 ? (
+                <div className={styles.profilePosts}>
+                    {postImages.map((image, index) => (
+                        <Link
+                            key={postId}
+                            href={postId}
+                            className={styles.profilePostCards}
+                            style={{
+                                backgroundImage: `url(${image.imageSrc})`,
+                                borderRadius: '0px',
+                                border: "1px solid black",
+                            }}
+                        />
+                    ))}
                 </div>
-                <button className={styles.profileNavUploadButton}>Upload Post</button>
-            </section>
-            <section className={styles.profileEditBox}>
-              <h3>Edit Profile</h3>
-              <form action={editProfileForm} className={styles.profileEditBoxForm}>
-                <div className={styles.profileEditBoxFormFirstContainer}>
-                  <div >
-                    <label htmlFor="username">Change username</label>
-                    <input type="text" name="username" id="username" placeholder={name}/>
-                  </div>
-                  <div>
-                    <label htmlFor="password">Change password</label>
-                    <input type="password" name="password" id="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;"/>
-                  </div>
-                  <div>
-                    <label htmlFor="bio">Bio</label>
-                    <textarea name="bio" id="bio" cols={30} rows={10} placeholder={description}></textarea>
-                  </div>
-                </div>
-                <div>
-                  <button type="submit">Save</button>
-                </div>
-              </form>
-            </section>
-        </main>
+            ) : (
+                <h2>No Images posted yet!</h2>
+            )}
+        </div>
     );
 };
 
-export default Profile;
+export default ProfilePage;
+
+{
+    /* <Image key={index} src={postImage} alt={postName} width={100} height={100}/> */
+}
