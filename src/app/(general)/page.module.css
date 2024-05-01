@@ -1,0 +1,17 @@
+@keyframes rotate {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.mainHeading {
+  margin-block: 1rem;
+}
+.mainImage {
+  max-width: 612px;
+  width: 100%;
+  padding-inline: 1rem;
+}
