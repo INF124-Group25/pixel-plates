@@ -32,7 +32,7 @@ const ProfileNav = () => {
                     <div className={styles.profileNavButtons}>
                         <Link href="/profile/edit" >Edit Profile</Link>
                         <Link href="/profile" >View Profile</Link>
-                        <Link href="/profile/followers" >View Following</Link>
+                        <Link href="/profile/following" >View Following</Link>
                     </div>
                 )}
             </div>
