@@ -1,0 +1,77 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+  }
+  
+  .topNav button {
+    background-color: #ff8c00; /* Orange color */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  
+  .search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .search input {
+    width: 60%;
+    padding: 12px;
+    border: 1px solid #000000;
+    border-right: none; /* Remove right border */
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: white;
+    color: black;
+  }
+  
+  .searchBtn {
+    padding: 12px 16px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-left: none; /* Remove left border to merge with the input field */
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .directionsBtn {
+    background-color: #333; /* Dark grey */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+  }
+  .cardContainer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+  .imagePlaceholder {
+    width: 10%; /* Adjust width as needed */
+    height: 100px; /* Adjust height as needed */
+    background-color: #ccc;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    color: #666;
+  }

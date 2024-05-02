@@ -62,6 +62,9 @@
     align-items: center;
     gap: 1rem;
   }
+  .navContainer a{
+    color:white;
+  }
   .navBrandContainer{
     display: flex;
     flex-direction: row;
