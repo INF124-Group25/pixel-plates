@@ -41,7 +41,7 @@ const ProfileNav = () => {
                     Edit Profile
                 </Link>
             ) : (
-                <Link href="/upload" className={styles.profileNavUploadButton}>
+                <Link href="/profie/upload" className={styles.profileNavUploadButton}>
                     Upload Post
                 </Link>
             )}

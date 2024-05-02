@@ -1,0 +1,109 @@
+
+
+
+.uploadPostBox{
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 1rem;
+}
+
+
+.uploadPostBox > h3{
+font-weight: 200;
+}
+
+.uploadPostBoxForm{
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+gap: 1rem;
+width: 100%;
+height: 100%;
+padding-bottom: 2rem;
+
+}
+
+.uploadPostBoxForm .uploadPostBoxFormFirstContainer div{
+display: flex;
+flex-direction: row;
+}
+
+.uploadPostBoxForm .uploadPostBoxFormFirstContainer div:last-child{
+margin-top: 2rem;
+display:flex;
+justify-content: space-between; 
+align-items: flex-start;  
+}
+
+.uploadPostBoxForm div:last-child{
+display: flex;
+justify-content: center;
+@media (min-width: 640px){
+    justify-content: flex-end;
+}
+}
+
+.uploadPostBox label {
+font-size: 0.7rem;
+display:inline;
+
+}
+
+.uploadPostBox input, .uploadPostBox textarea {
+padding: 0.4rem;
+font-size: 0.7rem;
+}
+
+.uploadPostBox input {
+width: 50%;
+}
+
+.uploadPostBox button{
+font-size: 1rem;
+padding: 0.6rem 2.5rem;
+}
+
+.search {
+display: flex;
+align-items: flex-start;
+width: 700px;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+
+.search input {
+width: 60%;
+padding: 12px;
+border: 1px solid #000000;
+font-size: 16px;
+border-radius: 5px;
+background-color: white;
+color: black;
+}
+
+.search button {
+font-size: 0.7rem;
+}
+
+.addImageBtn {
+width: 55%;
+height: 150px;
+margin-right: 50px;
+}
+
+/* how i got it to be unequal size but next to each other */
+.imageContainer{
+display:flex;
+justify-content: space-between; 
+align-items: flex-start;  
+margin-bottom: 10px;
+}
+
+#caption{
+width: 65%;
+height: 100px;
+}
+
+
+

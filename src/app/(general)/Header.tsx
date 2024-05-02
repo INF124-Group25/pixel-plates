@@ -17,7 +17,7 @@ const Header = () => {
             <nav className={styles.navContainer}>
                 <a href="/">Home</a>
                 <a href="/explore">Explore</a>
-                <a href="/upload">Upload</a>
+                <a href="/profile/upload">Upload</a>
                 <a href="/profile">Profile</a>
                 <a href="/settings">Settings</a>
                 <a href="/login">Login</a>
