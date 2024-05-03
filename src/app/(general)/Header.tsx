@@ -19,7 +19,7 @@ const Header = () => {
                 <a href="/explore">Explore</a>
                 <a href="/profile/upload">Upload</a>
                 <a href="/profile">Profile</a>
-                <a href="/settings">Settings</a>
+                <a href="/feed">Feed</a>
                 <a href="/login">Login</a>
             </nav>
         </header>
