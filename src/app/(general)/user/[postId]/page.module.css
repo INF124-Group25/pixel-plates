@@ -1,0 +1,107 @@
+
+.postBox{
+display: flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 1rem;
+}
+
+.postBox > h3{
+font-weight: 200;
+}
+
+.postBoxForm{
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+gap: 1rem;
+width: 100%;
+height: 100%;
+padding-bottom: 2rem;
+}
+
+.postHeader{
+display:flex;
+justify-content: space-between; 
+align-items: flex-start;  
+margin-bottom: 10px;
+}
+
+.postBoxForm .postBoxFormFirstContainer div{
+display: flex;
+flex-direction: row;
+}
+
+.postBoxForm .postBoxFormFirstContainer div:last-child{
+margin-top: 2rem;
+display:flex;
+justify-content: space-between; 
+align-items: flex-start;  
+}
+
+.postBoxForm div:last-child{
+display: flex;
+justify-content: center;
+@media (min-width: 640px){
+    justify-content: flex-end;
+}
+}
+
+.postBox label {
+font-size: 0.7rem;
+display:inline;
+
+}
+
+.postBox input, .postBox textarea {
+padding: 0.4rem;
+font-size: 0.7rem;
+}
+
+.postBox input {
+width: 50%;
+}
+
+.postBox button{
+font-size: 1rem;
+padding: 0.6rem 2.5rem;
+}
+
+.direction {
+display: flex;
+align-items: flex-start;
+width: 700px;
+justify-content: space-between;
+margin-bottom: 20px;
+}
+
+
+.direction button {
+font-size: 0.7rem;
+}
+
+.postPictures{
+    display: grid;
+
+    grid-template-columns: repeat(2, auto);
+    justify-content:space-evenly;
+    gap: 2rem;
+    @media (min-width: 768px){
+        grid-template-columns: repeat(3, auto);
+        justify-content:space-between;
+    }
+    @media (min-width: 1024px){
+        grid-template-columns: repeat(4, auto);
+    }
+
+    overflow:auto;
+    max-height:65vh;
+
+}
+.postPicturesCards{
+    cursor: pointer;
+    padding: 0;
+    width: 7rem;
+    height: 7rem;
+    background-size:cover;
+}

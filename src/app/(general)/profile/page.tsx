@@ -24,8 +24,8 @@ const ProfilePage = () => {
                 <div className={styles.profilePosts}>
                     {postImages.map((image, index) => (
                         <Link
-                            key={postId}
-                            href={postId}
+                            key={index}
+                            href={`/user/${postId}`}
                             className={styles.profilePostCards}
                             style={{
                                 backgroundImage: `url(${image.imageSrc})`,
