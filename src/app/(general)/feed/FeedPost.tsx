@@ -24,16 +24,22 @@ const PostCard: React.FC<{
 }) => {
     return (
         <div className={style.postCard}> 
-            <div>
+            <div className={style.postTitle}>
                 <p>{name}</p>
+            </div>
+            <div className={style.postBody}>
+                <div className={style.postInfo}>
                 <p>{address}</p>
-                <p>{number}</p>
-                <Image src={imageSrc} alt={imageName} width={100} height={100} layout="responsive" />
-                <p className={`starsReview`}>{stars} Stars, {review_count} Reviews</p>
+                <p className={style.Number}>{number}</p>
+                <p className={style.starsReview}>{stars} Stars, {review_count} Reviews</p>
+                <Image src={imageSrc} alt={imageName} className={style.postImage} width={100} height={100} layout="responsive" />
+                </div>
+                <div className={style.postReview}>
+                    <p className={style.Review_title}>Review:</p>
+                    <p className={style.Review_word}>{review}</p>
+                </div>
             </div>
-            <div>
-                <p>{review}</p>
-            </div>
+            
         </div>
     );
 };
