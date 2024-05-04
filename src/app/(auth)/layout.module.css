@@ -22,6 +22,34 @@
     margin: 0 auto;
 }
 
+
+
+.registerButton{
+    width: fit-content;
+    background-color: #FEFEFE;
+    border: 1.5px solid #000000;
+    padding: 10px 20px;
+    margin-right: 15rem;
+    cursor: pointer;
+    color: #000000;
+}
+.registerButton:hover{
+    background-color: #FF9F59;
+    color: black;
+}
+
+.main input {
+    background-color: white;
+    color: black;
+    border-radius: 0;
+}
+
+
+
+
+/* login */
+
+
 .login-container {
     display: flex;
     flex-direction: column;
@@ -98,14 +126,4 @@
     margin-block: auto;
 }
 
-.registerButton{
-    width: fit-content;
-    background-color: #FEFEFE;
-    border: 1.5px solid #000000;
-    padding: 10px 20px;
-    margin-right: 15rem;
-    cursor: pointer;
-}
-.registerButton:hover{
-    background-color: #FF9F59;
-}
+/* register only */
