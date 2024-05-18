@@ -21,6 +21,7 @@ const Header = () => {
                 <a href="/profile">Profile</a>
                 <a href="/feed">Feed</a>
                 <a href="/login">Login</a>
+                
             </nav>
         </header>
     );
