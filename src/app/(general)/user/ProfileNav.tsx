@@ -4,16 +4,42 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
 
 const ProfileNav = () => {
-    const name = "JonnieEats";
-    const description = "Follow my account for more finds in OC!";
+    const name = "JonnieEats"
+    const bio = "Follow my account for more finds in OC!";
     const imageSrc = "/default-user.png";
-    const password = "password";
+    // const username = params.username;
+
 
     const pathname = usePathname();
-    const isViewProfileRouter = pathname === "/profile";
-    // const isUserProfilePage ==== maybe use a cookie or something with auth ?
+
+    // const [bio, setBio] = useState("no bio yet");
+
+
+    // useEffect(()=>{
+    //     const fetchUser = async() => {
+    //         try {
+    //             const options = {
+    //                 headers: {
+
+    //                 }
+    //             }
+    //             const response = await fetch('http://localhost:5000/api/test/user');
+    //             console.log(response);//TESTING
+    //             const json = await response.json();
+    //             console.log(json);//TESTING
+    //             const bio = json[0].bio;
+    //             setBio(name);
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+            
+    //     };
+    //     fetchUser();
+    // }, [])
 
     return (
         <section className={styles.profileNav}>
@@ -25,26 +51,19 @@ const ProfileNav = () => {
                         width={125}
                         height={125}
                     />
-                    <h3>{name}</h3>
-                    <p>{description}</p>
+                    {pathname === `/user/${name}` && (
+                        <>
+                        <h3>{name}</h3>
+                        <p>{bio}</p>
+                        </>
+                    )}
                 </div>
-                {!isViewProfileRouter && (
+                {
                     <div className={styles.profileNavButtons}>
-                        <Link href="/profile/edit" >Edit Profile</Link>
-                        <Link href="/profile" >View Profile</Link>
-                        <Link href="/profile/following" >View Following</Link>
+                        <button>Unfollow</button>
                     </div>
-                )}
+                }
             </div>
-            {isViewProfileRouter ? (
-                <Link href="/profile/edit" className={styles.profileNavUploadButton}>
-                    Edit Profile
-                </Link>
-            ) : (
-                <Link href="/profile/upload" className={styles.profileNavUploadButton}>
-                    Upload Post
-                </Link>
-            )}
         </section>
     );
 };

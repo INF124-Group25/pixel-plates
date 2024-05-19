@@ -1,0 +1,34 @@
+.profile{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+}
+.profilePosts{
+    display: grid;
+
+    grid-template-columns: repeat(2, auto);
+    justify-content:space-evenly;
+    gap: 2rem;
+    @media (min-width: 768px){
+        grid-template-columns: repeat(3, auto);
+        justify-content:space-between;
+    }
+    @media (min-width: 1024px){
+        grid-template-columns: repeat(4, auto);
+    }
+
+    overflow:auto;
+    max-height:65vh;
+
+}
+
+
+
+.profilePostCards{
+    cursor: pointer;
+    padding: 0;
+    width: 7rem;
+    height: 7rem;
+    background-size:cover;
+}

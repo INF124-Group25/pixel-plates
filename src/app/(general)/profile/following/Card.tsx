@@ -1,5 +1,11 @@
+"use client"
+
+import Link from "next/link";
 import style from "./page.module.css";
 import Image from "next/image";
+import { createContext } from 'react'
+
+// const Context = createContext();
 
 const FollowerCard: React.FC<{ src: string; name: string; bio: string }> = ({
     src,
@@ -9,7 +15,11 @@ const FollowerCard: React.FC<{ src: string; name: string; bio: string }> = ({
     return (
         <div className={style.followerCard}>
             <div>
-                <Image src={src} alt={name} width={100} height={100}></Image>
+                <Link href={`/user/${name}`} >
+                    {/* <a> */}
+                    <Image src={src} alt={name} width={100} height={100} ></Image>
+                    {/* </a> */}
+                </Link>
                 <p>{name}</p>
                 <p>{bio}</p>
             </div>
