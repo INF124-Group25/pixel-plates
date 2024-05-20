@@ -8,38 +8,52 @@ import { useEffect, useState } from "react";
 
 
 const ProfileNav = () => {
-    const name = "JonnieEats"
-    const bio = "Follow my account for more finds in OC!";
+    // const name = "TheLink"
+    // const bio = "Follow my account for more finds in OC!";
     const imageSrc = "/default-user.png";
     // const username = params.username;
 
 
     const pathname = usePathname();
+    const segments = pathname.split('/');
+    const targetUsername = segments[2];
 
-    // const [bio, setBio] = useState("no bio yet");
+    const [bio, setBio] = useState("no bio yet");
+    const [username, setUsername] = useState("");
 
 
-    // useEffect(()=>{
-    //     const fetchUser = async() => {
-    //         try {
-    //             const options = {
-    //                 headers: {
+    useEffect(()=>{
+        const fetchUser = async() => {
+            try {
+                const options = {
+                    headers: {
 
-    //                 }
-    //             }
-    //             const response = await fetch('http://localhost:5000/api/test/user');
-    //             console.log(response);//TESTING
-    //             const json = await response.json();
-    //             console.log(json);//TESTING
-    //             const bio = json[0].bio;
-    //             setBio(name);
-    //         } catch (error) {
-    //             console.error(error);
-    //         }
-            
-    //     };
-    //     fetchUser();
-    // }, [])
+                    }
+                }
+
+                const response = await fetch('http://localhost:5001/api/test/user');
+                console.log(response);//TESTING
+                const json = await response.json();
+                console.log(json);//TESTING
+
+                const user = json.find((user: { username: string; }) => user.username === targetUsername);
+
+                if (user) {
+                    const username = user.username
+                    const bio = user.bio;
+                    setUsername(username);
+                    setBio(bio); }
+                    else {
+                        console.error(`User with username ${targetUsername} not found`);
+                    }
+            } catch (error) {
+                console.error(error);
+            }    
+        };
+        fetchUser();
+    }, [targetUsername])
+
+    
 
     return (
         <section className={styles.profileNav}>
@@ -51,9 +65,9 @@ const ProfileNav = () => {
                         width={125}
                         height={125}
                     />
-                    {pathname === `/user/${name}` && (
+                    {pathname === `/user/${username}` && (
                         <>
-                        <h3>{name}</h3>
+                        <h3>{username}</h3>
                         <p>{bio}</p>
                         </>
                     )}

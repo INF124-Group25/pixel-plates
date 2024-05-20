@@ -3,11 +3,13 @@ import cors from 'cors';
 // import authRoutes from "./routes/auth.routes";
 import testRoutes from './routes/test.routes';
 import { endClient } from "db/db";
+
+
 const app = express();
 app.use(cors());
 
 
-const port = 5000;
+const port = 5001;
 
 // If your app is served through a proxy
 // trust the proxy to allow us to read the `X-Forwarded-*` headers

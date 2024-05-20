@@ -7,11 +7,13 @@ const router = express.Router();
 // test/user
 router.get("/user", async (req, res) => {
     try {
-        const result = await db.select({ name: user.username }).from(user);
+        const result = await db.select({ username: user.username, bio: user.bio }).from(user);
         res.send(result);
         console.log(result);
     } catch (error) {
-        res.send(error).sendStatus(500);
+        // res.send(error).sendStatus(500);
+        res.send(error);
+
     }
 });
 

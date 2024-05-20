@@ -16,7 +16,8 @@
     "cors": "^2.8.5",
     "drizzle-orm": "^0.30.10",
     "express": "^4.19.2",
-    "postgres": "^3.4.4"
+    "postgres": "^3.4.4",
+    "tsx": "^4.10.5"
   },
   "devDependencies": {
     "@simplewebauthn/types": "^10.0.0",

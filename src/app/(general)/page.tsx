@@ -16,12 +16,12 @@ export default function Home() {
 
                     }
                 }
-                const response = await fetch('http://localhost:5000/api/test/user');
+                const response = await fetch('http://localhost:5001/api/test/user');
                 console.log(response);//TESTING
                 const json = await response.json();
                 console.log(json);//TESTING
-                const name = json[0].name;
-                setUsername(name);
+                const username = json[0].username;
+                setUsername(username);
             } catch (error) {
                 console.error(error);
             }
