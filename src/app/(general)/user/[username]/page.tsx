@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
 
@@ -7,6 +10,7 @@ const ProfileDetails = ({params} : {params: {username: string}}) => {
     const postName = "Cha For Tea - University Town Center";
     const username = params.username;
     const postImage = "/popcorn-chicken.png";
+
 
     type posts = {
         name: string;
@@ -26,7 +30,7 @@ const ProfileDetails = ({params} : {params: {username: string}}) => {
                     {postImages.map((image, index) => (
                         <Link
                             key={index}
-                            href={`/user/${username}`}
+                            href={`/user/${params.username}/post/OxLseuNd`}
                             className={styles.profilePostCards}
                             style={{
                                 backgroundImage: `url(${image.imageSrc})`,
