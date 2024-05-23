@@ -1,7 +1,7 @@
-CREATE SCHEMA "my_schema";
+CREATE SCHEMA "v2_schema";
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "business" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"business_name" varchar(255) NOT NULL,
 	"address" varchar(255) NOT NULL,
 	"phone_number" varchar(255),
@@ -18,14 +18,14 @@ CREATE TABLE IF NOT EXISTS "business_review" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "image_Url" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"post_id" uuid NOT NULL,
 	"url" varchar(255),
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "post" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
 	"business_id" uuid NOT NULL,
 	"caption" varchar(255),
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "post" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "user" (
-	"id" uuid PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"username" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
 	"password" varchar(255) NOT NULL,

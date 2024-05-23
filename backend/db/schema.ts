@@ -1,6 +1,5 @@
 import {
     integer,
-    serial,
     text,
     timestamp,
     varchar,
@@ -8,12 +7,11 @@ import {
     uuid,
     primaryKey
 } from "drizzle-orm/pg-core";
-import { pgTable, pgSchema } from "drizzle-orm/pg-core";
+import { pgTable } from "drizzle-orm/pg-core";
 
-export const mySchema = pgSchema("my_schema");
 // Define tables
 const user = pgTable("user", {
-    id: uuid("id").primaryKey(),
+    id: uuid("id").defaultRandom().primaryKey(),
     username: varchar("username", { length: 255 }).unique().notNull(),
     email: varchar("email", { length: 255 }).unique().notNull(),
     password: varchar("password", { length: 255 }).notNull(),
@@ -31,7 +29,7 @@ const userFollowing = pgTable("user_following", {
 }));
 
 const post = pgTable("post", {
-    id: uuid("id").primaryKey(),
+    id: uuid("id").defaultRandom().primaryKey(),
     user_id: uuid("user_id").references(() => user.id).notNull(),
     business_id: uuid("business_id").notNull(),
     caption: varchar("caption", { length: 255 }),
@@ -40,14 +38,14 @@ const post = pgTable("post", {
 });
 
 const imageUrl = pgTable("image_Url", {
-    id: uuid("id").primaryKey(),
+    id: uuid("id").defaultRandom().primaryKey(),
     post_id: uuid("post_id").references(() => post.id).notNull(),
     url: varchar("url", { length: 255 }),
     created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
 const business = pgTable("business", {
-    id: uuid("id").primaryKey(),
+    id: uuid("id").defaultRandom().primaryKey(),
     business_name: varchar("business_name", { length: 255 }).notNull(),
     address: varchar("address", { length: 255 }).notNull(),
     phone_number: varchar("phone_number", { length: 255 }),

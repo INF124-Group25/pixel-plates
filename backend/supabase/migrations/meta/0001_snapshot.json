@@ -1,6 +1,6 @@
 {
-  "id": "e44dc830-1986-4a60-819c-5219dda1916a",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "9f642d33-827c-4961-93cd-4fa5c2075635",
+  "prevId": "e44dc830-1986-4a60-819c-5219dda1916a",
   "version": "6",
   "dialect": "postgresql",
   "tables": {
@@ -371,9 +371,7 @@
     }
   },
   "enums": {},
-  "schemas": {
-    "v2_schema": "v2_schema"
-  },
+  "schemas": {},
   "_meta": {
     "columns": {},
     "schemas": {},

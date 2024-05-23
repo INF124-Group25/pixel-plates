@@ -1,8 +1,6 @@
 import Link from "next/link";
 import styles from "../layout.module.css";
 import Image from "next/image";
-import { signIn, auth } from "@/auth";
-import Page from "@/app/server/page";
 import { redirect } from "next/navigation";
 
 
@@ -20,15 +18,15 @@ export default function Register() {
     //     redirect("/");
     // };
     const registerGoogle = async () => {
-        "use server";
-        await signIn("google", { redirectTo: "/" });
-        await logSession();
+        // "use server";
+        // await signIn("google", { redirectTo: "/" });
+        // await logSession();
     };
     const logSession = async () => {
-        "use server";
-        const session = await auth();
-        if (!session || !session.user) return null;
-        console.log(session.user); // TESTING
+        // "use server";
+        // const session = await auth();
+        // if (!session || !session.user) return null;
+        // console.log(session.user); // TESTING
     };
 
     return (
@@ -92,7 +90,6 @@ export default function Register() {
                     </div>
                 </div>
             </form>
-            <Page />
         </div>
     );
 }
