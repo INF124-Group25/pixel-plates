@@ -1,7 +1,7 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 
-const UploadPost = () => {
+const CreatePost = () => {
     const name = "JonnieEats";
     const description = "Add your review ...";
     const imageSrc = "/default-user.png";
@@ -20,7 +20,7 @@ const UploadPost = () => {
 
     return (
             <div className={styles.uploadPostBox}>
-              <h3>Upload Post</h3>
+              <h3>Create Post</h3>
               <div className={styles.search}>
                 <input type="text" placeholder="Search for business ..." />
                 <button>Search</button>
@@ -36,11 +36,11 @@ const UploadPost = () => {
                     <textarea name="review" id="review" cols={30} rows={10} placeholder={description} style={{width: '100%'}}></textarea>
                 </div>
                 <div>
-                  <button type="submit">Upload</button>
+                  <button type="submit">Submit</button>
                 </div>
               </form>
             </div>
     );
 };
 
-export default UploadPost;
+export default CreatePost;
