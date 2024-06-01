@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import testRoutes from "./routes/test.routes";
+import protectedRoutes from "./routes/protected.routes";
 import { endClient } from "db/db";
 import errorMiddleware from "middleware/errorMiddleware";
 
