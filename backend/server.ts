@@ -3,14 +3,11 @@ import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
 import testRoutes from "./routes/test.routes";
-import protectedRoutes from "./routes/protected.routes";
 import { endClient } from "db/db";
 import errorMiddleware from "middleware/errorMiddleware";
 
 const app = express();
 app.use(cors());
-// app.set("trust proxy", true);
-// Parse incoming requests data
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 const port = process.env.PORT || 5000;
