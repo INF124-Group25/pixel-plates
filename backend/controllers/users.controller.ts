@@ -4,7 +4,6 @@ import { eq } from "drizzle-orm";
 import asyncMiddleware from "middleware/asyncMiddleware";
 import { hashPassword, comparePassword } from "utils/passwordManager";
 import { generate } from "utils/jwtManager";
-import { AuthRequest } from "types/types";
 
 const registerUser = asyncMiddleware(async (req, res, next) => {
     const { username, password, email, bio, profile_image_URL } = req.body;
@@ -66,8 +65,12 @@ const loginUser = asyncMiddleware(async (req, res, next) => {
     }
 });
 
-const getUserInfo = asyncMiddleware<AuthRequest>(async (req, res, next) => {
+const getUserInfo = asyncMiddleware(async (req, res, next) => {
     const userReq = req.user;
+    if(!userReq){
+        res.status(401);
+        throw new Error('No request.user field');
+    }
     const id = req.params.id;
     if (userReq.id.toString() !== id) {
         res.status(401);

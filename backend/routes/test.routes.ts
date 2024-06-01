@@ -2,6 +2,8 @@ import express from "express";
 import { db } from "db/db";
 import { user, post, User } from "db/schema";
 import { eq, lt, gte, ne } from 'drizzle-orm';
+import authMiddleware from "middleware/authMiddleware";
+import asyncMiddleware from "middleware/asyncMiddleware";
 
 
 const router = express.Router();
@@ -18,6 +20,13 @@ router.get("/user", async (req, res) => {
 
     }
 });
+
+
+router.get('/test', authMiddleware, asyncMiddleware(async(req,res,next)=>{
+    const results = await db.select().from(user);
+    res.send(results);
+    console.log(results);
+}));
 
 // grabs the list of posts for the user
 router.get("/user/:username/post", async (req, res) => {
