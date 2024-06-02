@@ -1,6 +1,6 @@
 import express from "express";
 import { db } from "db/db";
-import { user, post, User, userFollowing } from "db/schema";
+import { user, post, User, userFollowing, business } from "db/schema";
 import { eq, lt, gte, ne } from 'drizzle-orm';
 import authMiddleware from "middleware/authMiddleware";
 import asyncMiddleware from "middleware/asyncMiddleware";
@@ -23,6 +23,19 @@ router.get("/user", async (req, res) => {
     }
 });
 
+//  get other user profile details
+router.get("/user/:userId", async (req, res) => {
+    try {
+        const userIdParam = req.params.userId;
+        const result = await db.select({ username: user.username, bio: user.bio }).from(user).where(eq(user.id, userIdParam));
+        res.send(result);
+        // console.log(result);
+    } catch (error) {
+        // res.send(error).sendStatus(500);
+        res.send(error);
+
+    }
+});
 
 router.get('/test', authMiddleware, asyncMiddleware(async(req,res,next)=>{
     const results = await db.select().from(user);
@@ -53,17 +66,17 @@ router.get("/feed", async (req, res) => {
 
         // get current hardcoded user
         const userId = await db.select({ id: user.id }).from(user).where(eq(user.username, loggedInUser));
-        console.log("user id is:", userId);
+        // console.log("user id is:", userId);
 
         // search for who they are following
         const following = await db.select({ follow_id: userFollowing.following_id}).from(userFollowing).where(eq(userFollowing.user_id, userId[0].id));
         
         following.forEach(followingUser => {
-            console.log("followingUser: ", followingUser.follow_id)
+            // console.log("followingUser: ", followingUser.follow_id)
             followingList.push(followingUser.follow_id);
         });
 
-        console.log("followingList:", followingList);
+        // console.log("followingList:", followingList);
 
         
         // go to the posts of each user and get what to display: this is wrong!
@@ -76,7 +89,7 @@ router.get("/feed", async (req, res) => {
 
         let feedPromises = followingList.map(async followingUser => {
             const followingUserPosts = await db.select().from(post).where(eq(post.user_id, followingUser));
-            console.log("posts: ", followingUserPosts);
+            // console.log("posts: ", followingUserPosts);
             return followingUserPosts;
         });
 
@@ -100,5 +113,16 @@ router.get("/feed", async (req, res) => {
 });
 
 // show followed members
+
+// get business details
+router.get("/:business_id", async (req, res) => {
+    try {
+        const businessId = req.params.business_id;
+        const businessDetails = await db.select().from(business).where(eq(business.id, businessId));
+        res.send(businessDetails);
+    } catch (error) {
+        res.send(error);
+    }
+});
 
 export default router;

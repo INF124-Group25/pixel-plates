@@ -2,8 +2,8 @@ import style from "./page.module.css";
 import Image from "next/image";
 
 const PostCard: React.FC<{ 
-    imageSrc: string; 
-    imageName: string; 
+    // imageSrc: string; 
+    // imageName: string; 
     name: string; 
     address: string; 
     number: string; 
@@ -12,8 +12,8 @@ const PostCard: React.FC<{
     review: string;
     postID: string; 
 }> = ({
-    imageSrc,
-    imageName,
+    // imageSrc,
+    // imageName,
     name,
     address,
     number,
@@ -32,7 +32,7 @@ const PostCard: React.FC<{
                 <p>{address}</p>
                 <p className={style.Number}>{number}</p>
                 <p className={style.starsReview}>{stars} Stars, {review_count} Reviews</p>
-                <Image src={imageSrc} alt={imageName} className={style.postImage} width={100} height={100} layout="responsive" />
+                {/* <Image src={imageSrc} alt={imageName} className={style.postImage} width={100} height={100} layout="responsive" />  */}
                 </div>
                 <div className={style.postReview}>
                     <p className={style.Review_title}>Review:</p>
