@@ -4,11 +4,11 @@ import { eq } from "drizzle-orm";
 import asyncMiddleware from "middleware/asyncMiddleware";
 import { hashPassword, comparePassword } from "utils/passwordManager";
 import { generate } from "utils/jwtManager";
-import { LoginRequestBody, LoginResponseBody } from '~shared/types';
+import { LoginRequestBody, LoginResponseBody, RegisterRequestBody} from '~shared/types';
 
 const registerUser = asyncMiddleware(async (req, res, next) => {
-    const { username, password, email, bio, profile_image_URL } = req.body;
-    if (!username || !password || !email || !bio || !profile_image_URL) {
+    const { username, password, email } = req.body as RegisterRequestBody;
+    if (!username || !password || !email) {
         throw new Error("All fields are required");
     }
     // console.log(req.body);//TESTING
@@ -26,8 +26,6 @@ const registerUser = asyncMiddleware(async (req, res, next) => {
         username: username,
         password: hashedPassword,
         email: email,
-        bio: bio,
-        profile_image_URL: profile_image_URL,
     };
     const registeredUser = await db.insert(user).values(newUser).returning();
     res.status(201).send({
