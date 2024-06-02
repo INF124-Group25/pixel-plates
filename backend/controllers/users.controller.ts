@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import asyncMiddleware from "middleware/asyncMiddleware";
 import { hashPassword, comparePassword } from "utils/passwordManager";
 import { generate } from "utils/jwtManager";
+import { LoginRequestBody, LoginResponseBody } from '~shared/types';
 
 const registerUser = asyncMiddleware(async (req, res, next) => {
     const { username, password, email, bio, profile_image_URL } = req.body;
@@ -42,7 +43,7 @@ const registerUser = asyncMiddleware(async (req, res, next) => {
 });
 
 const loginUser = asyncMiddleware(async (req, res, next) => {
-    const { username, password } = req.body; // might change username to email ORRRR do username || email
+    const { username, password } = req.body as LoginRequestBody; // might change username to email ORRRR do username || email
     // validate user
     const existing_user = await db
         .select()
@@ -50,7 +51,7 @@ const loginUser = asyncMiddleware(async (req, res, next) => {
         .where(eq(user.username, username));
     if (!existing_user) throw new Error("Invalid username");
     if (await comparePassword(password, existing_user[0].password)) {
-        res.status(200).send({
+        const responseBody: LoginResponseBody = {
             id: existing_user[0].id,
             username: existing_user[0].username,
             email: existing_user[0].email,
@@ -58,10 +59,11 @@ const loginUser = asyncMiddleware(async (req, res, next) => {
             profile_image_URL: existing_user[0].profile_image_URL,
             created_at: existing_user[0].created_at,
             token: generate(existing_user[0].id),
-        });
+        };
+        res.status(200).send(responseBody);
     } else {
-        // invalid password
-        return res.status(401).send({ error: "Authentication failed" });
+        res.status(401);
+        throw new Error("Authentication failed");
     }
 });
 

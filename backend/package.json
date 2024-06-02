@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.588.0",
     "bcrypt-ts": "^5.0.2",
     "cors": "^2.8.5",
     "drizzle-orm": "^0.30.10",

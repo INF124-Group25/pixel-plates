@@ -38,19 +38,23 @@ const authMiddleware = asyncMiddleware(async (req, res, next) => {
                 next();
             } else {
                 res.status(401);
+                res.redirect('/login');
                 throw new Error('Not authorized, invalid token');
             }
         } catch (error) {
             if(error instanceof jwt.TokenExpiredError){
                 res.status(401);
+                res.redirect('/login');
                 throw new Error('Token expired!!');
             }
             console.error('Error verifying token:', error); // TESTING
             res.status(401);
+            res.redirect('/login');
             throw new Error('Not authorized, invalid token' );
         }
     } else {
         res.status(401);
+        res.redirect('/login');
         throw new Error("Not authorized, no token");
     }
 });
