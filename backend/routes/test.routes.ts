@@ -24,11 +24,22 @@ router.get("/user", async (req, res) => {
 });
 
 
-router.get('/test', authMiddleware, asyncMiddleware(async(req,res,next)=>{
+const gettingAllUsersService = async() => {
     const results = await db.select().from(user);
-    res.send(results);
-    console.log(results);
-}));
+    return results;
+};
+
+const testingGettingAllUsers = asyncMiddleware(async(req,res,next)=>{
+    const users = gettingAllUsersService;
+    res.send(users);
+    console.log(users);
+});
+
+router.get('/test', authMiddleware, testingGettingAllUsers);
+
+
+
+
 
 // grabs the list of posts for the user
 router.get("/user/:username/post", async (req, res) => {
@@ -46,7 +57,7 @@ router.get("/user/:username/post", async (req, res) => {
 });
 
 // grabs the posts of followed members
-router.get("/feed", async (req, res) => {
+router.get("/feed", authMiddleware, asyncMiddleware(async (req, res) => {
     try {
         let followingList: string[] = [];
         let feed: any[] = [];
@@ -95,9 +106,11 @@ router.get("/feed", async (req, res) => {
 
     } catch (error) {
         // res.send(error).sendStatus(500);
-        res.send(error);
+        // res.send(error);
+        res.status(404)
+        throw new Error("feed not working:");
     }
-});
+}));
 
 // show followed members
 

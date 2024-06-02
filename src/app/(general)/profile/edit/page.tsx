@@ -13,7 +13,13 @@ const ProfileEdit = () => {
       const rawFormData = {
 
       };
-
+      const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/`;
+      const response = await fetch(url, {
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": 'Bearer ' + localStorage.getItem("token")
+        },
+      });
       // mutate data
       // revalidate cache
     };
