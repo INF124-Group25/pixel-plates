@@ -4,7 +4,7 @@ import { user, post, User, userFollowing, business } from "db/schema";
 import { eq, lt, gte, ne } from 'drizzle-orm';
 import authMiddleware from "middleware/authMiddleware";
 import asyncMiddleware from "middleware/asyncMiddleware";
-
+import { like } from "drizzle-orm";
 
 const router = express.Router();
 
@@ -133,6 +133,19 @@ router.get("/:business_id", async (req, res) => {
         const businessId = req.params.business_id;
         const businessDetails = await db.select().from(business).where(eq(business.id, businessId));
         res.send(businessDetails);
+    } catch (error) {
+        res.send(error);
+    }
+});
+
+router.get("/search/:query", async (req, res) => {
+    try {
+        const query = req.params.query;
+        const results = await db
+            .select()
+            .from(business)
+            .where(like(business.business_name, `%${query}%`));
+        res.send(results);
     } catch (error) {
         res.send(error);
     }
