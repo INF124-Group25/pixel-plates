@@ -2,13 +2,20 @@
 
 import s from '@/app/(general)/profile/edit/page.module.css';
 import { fetchUserProfile, updateUserProfile } from '@/services/api';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LoginResponseBody, UpdateUserRequestBody } from '~shared/types';
+import { Context } from './UserContext';
 
 
 const EditProfile = () => {
+    const userContext = useContext(Context);
+    if(!userContext){
+        throw new Error('context should be loaded within a context provider');
+    }
+    const {user, loading, userToken, setUser, setUserToken, isUserAuthenticated, setupLocalUser} = userContext;
+
     const [id, setId] = useState('');
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -47,6 +54,8 @@ const EditProfile = () => {
                 setEmail(newUserResponse.email);
                 setBio(newUserResponse.bio || '');
                 setAvatar(newUserResponse.profile_image_URL || '');
+                localStorage.setItem('user', JSON.stringify(newUserResponse)); //TESTING
+                setUser(newUserResponse);
                 notifySuccessProfileEdit();
             } catch (error) {
                 console.error('Failed updating profile:', error);
@@ -65,12 +74,21 @@ const EditProfile = () => {
                 setEmail(data.email);
                 setBio(data.bio || '');
                 setAvatar(data.profile_image_URL || '');
+                setupLocalUser();
             } catch (error) {
                 console.error('Failed initializing edit profile:', error);
             }
         };
         initialProfileFetch();
     },[])
+
+    useEffect(()=>{
+        if(!user) return;
+        setUsername(user.username);
+        setEmail(user.email);
+        // setAvatar(user.profile_image_URL || '');
+        setBio(user.bio || '');
+    },[user, userToken]);
 
     return (
         <form className={s.profileEditBoxForm} onSubmit={handleEditProfileForm}>

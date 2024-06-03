@@ -4,13 +4,21 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { fetchUserProfile } from "@/services/api";
+import { Context, UserContextType } from '@/components/UserContext';
+
 
 const ProfileNav = () => {
+    const userContext = useContext(Context);
+    if(!userContext){
+        throw new Error('context should be loaded within a context provider');
+    }
+    const {user, loading, userToken, setUser, setUserToken, isUserAuthenticated, setupLocalUser} = userContext;
 
     const defaultImage = "/default-user.png";
-
+    
+    
     const [name, setName] = useState('null');
     const [description, setDescription] = useState('null');
     // const [image, setImage] = useState(defaultImage);
@@ -33,7 +41,14 @@ const ProfileNav = () => {
             }
         };
         fetchUserInfo();
-    },[])
+        setupLocalUser();
+    },[]);
+
+    useEffect(()=>{
+        if(!user) return;
+        setName(user.username);
+        setDescription(user.bio || '');
+    },[user, userToken]);
 
 
     return (
