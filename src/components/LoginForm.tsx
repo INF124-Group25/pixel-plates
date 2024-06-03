@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation'
 import s from '@/app/(auth)/layout.module.css';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchAPI } from "@/services/api";
+import { LoginResponseBody } from "~shared/types";
 
 
 const LoginForm = ()=> {
@@ -26,8 +28,7 @@ const LoginForm = ()=> {
         e.preventDefault();
         const fetchUser = async () => {
             try {
-                const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/login`;
-                const response = await fetch(url, {
+                const data: LoginResponseBody = await fetchAPI('/auth/login', {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -37,10 +38,6 @@ const LoginForm = ()=> {
                         password: password,
                     }),
                 });
-                if (!response.ok) {
-                    throw new Error('Server error loggin in');
-                }
-                const data = await response.json();
                 localStorage.setItem('token', data.token);
                 console.log("Login submitted", { username, password });
                 notifyUserloginSuccess();

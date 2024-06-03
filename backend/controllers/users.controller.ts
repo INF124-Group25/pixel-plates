@@ -3,8 +3,9 @@ import { user, NewUser, User } from "db/schema";
 import { eq } from "drizzle-orm";
 import asyncMiddleware from "middleware/asyncMiddleware";
 import { hashPassword, comparePassword } from "utils/passwordManager";
-import { generate } from "utils/jwtManager";
-import { LoginRequestBody, LoginResponseBody, RegisterRequestBody} from '~shared/types';
+import { generate, verify } from "utils/jwtManager";
+import { LoginRequestBody, LoginResponseBody, MyUserRequestBody, RegisterRequestBody, UpdateUserRequestBody} from '~shared/types';
+import { getUserWithToken, updateUserWithUser } from "services/user.service";
 
 const registerUser = asyncMiddleware(async (req, res, next) => {
     const { username, password, email } = req.body as RegisterRequestBody;
@@ -65,6 +66,7 @@ const loginUser = asyncMiddleware(async (req, res, next) => {
     }
 });
 
+
 const getUserInfo = asyncMiddleware(async (req, res, next) => {
     const userReq = req.user;
     if(!userReq){
@@ -90,4 +92,37 @@ const getUserInfo = asyncMiddleware(async (req, res, next) => {
     res.status(200).send(userInfo);
 });
 
-export { registerUser, loginUser, getUserInfo };
+const getMyUser = asyncMiddleware(async(req, res, next) => {
+    res.status(200).send(req.user);
+});
+
+const updateUser = asyncMiddleware(async(req, res, next) => {
+    const userReq = req.user;
+    if(!userReq){
+        res.status(401);
+        throw new Error('No request.user field');
+    }
+    const id = req.params.id;
+    if (userReq.id.toString() !== id) {
+        res.status(401);
+        throw new Error("Not authorized, invalid user");
+    }
+    const updateUser = req.body as UpdateUserRequestBody;
+    const passwordInEditRequest = updateUser.password.length > 0;
+    let userPut:NewUser;
+    userPut = {
+        username: updateUser.username || userReq.username,
+        password: '',
+        email:updateUser.username || userReq.email,
+        bio:updateUser.bio || userReq.bio,
+        profile_image_URL: updateUser.profile_image_URL || userReq.profile_image_URL,
+    }
+    if(passwordInEditRequest){
+        updateUser.password = await hashPassword(updateUser.password);
+        userPut.password = updateUser.password;
+    }
+    const changedUser = await updateUserWithUser(userPut, passwordInEditRequest, id);
+    res.status(200).send(changedUser);
+});
+
+export { registerUser, loginUser, getUserInfo, getMyUser, updateUser };

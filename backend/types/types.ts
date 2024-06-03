@@ -21,6 +21,11 @@ export type VerifiedUser = {
     created_at: Date;
 };
 
+export type PhotoFile = {
+    buffer:string;
+    originalName: string;
+};
+
 export type JwtPayload = {
     id: string;
     iat: number;

@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchAPI } from '@/services/api'
+import { RegisterResponseBody } from "~shared/types";
 
 
 const RegisterForm = () => {
@@ -30,9 +32,8 @@ const RegisterForm = () => {
         }
         const fetchUser = async () => {
             try {
-                const url = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth/register`;
-                const response = await fetch(url, {
-                    method: "POST",
+                const response:RegisterResponseBody = await fetchAPI('/auth/register', {
+                    method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
                     },
@@ -42,11 +43,8 @@ const RegisterForm = () => {
                         password: password,
                     }),
                 });
-                if (!response.ok) {
-                    throw new Error('Server error loggin in');
-                }
-                const data = await response.json();
-                localStorage.setItem('token', data.token);
+                console.log('response:',response)
+                localStorage.setItem('token', response.token);
                 console.log("Register submitted", { username, email, password });
                 notifyUserRegisterSuccess();
                 router.push('/profile');

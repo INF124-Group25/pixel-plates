@@ -1,9 +1,10 @@
 import express from 'express';
-import { VerifiedUser } from '../types';
+import { VerifiedUser, PhotoFile } from '../types';
 declare global {
     namespace Express {
         interface Request {
-            user?:VerifiedUser
+            user?:VerifiedUser;
+            file?: PhotoFile;
         }
     };
 };

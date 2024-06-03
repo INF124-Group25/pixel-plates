@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
+import userRoutes from "./routes/user.routes";
 import testRoutes from "./routes/test.routes";
 import { endClient } from "db/db";
 import errorMiddleware from "middleware/errorMiddleware";
@@ -13,6 +14,7 @@ app.use(express.json());
 const port = process.env.PORT || 5001;
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 app.use("/api/test", testRoutes);
 
 app.use(errorMiddleware);

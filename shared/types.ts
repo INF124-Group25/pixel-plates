@@ -9,6 +9,10 @@ export type RegisterRequestBody = {
     password: string;
 };
 
+export type MyUserRequestBody = {
+    token: string;
+};
+
 export type LoginResponseBody = {
     id: string;
     username: string;
@@ -27,4 +31,12 @@ export type RegisterResponseBody = {
     profile_image_URL: string | null;
     created_at: Date;
     token: string;
+};
+
+export type UpdateUserRequestBody = {
+    username: string;
+    email:string; 
+    password: string;
+    bio:string;
+    profile_image_URL: string;
 };
