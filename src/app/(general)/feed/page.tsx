@@ -8,6 +8,28 @@ import PostCard from "./FeedPost";
 import { useEffect, useState } from "react";
 
 
+interface User {
+    id: string;
+    name: string;
+    bio: string;
+    src: string;
+    username: string;
+}
+
+interface Feed {
+    user_id: string;
+    business_id: string;
+    review: string;
+    id: string;
+}
+
+interface Business {
+    business_name: string;
+    address: string;
+    phone_number: string;
+    star_rating: number;
+    review_count: number;
+}
 
 const FeedPage = () => {
     const name = "Feed";
@@ -15,24 +37,9 @@ const FeedPage = () => {
     // const postId = "OxLseuNd";
     // const postImage = "/popcorn-chicken.png";
 
-    interface User {
-        id: string;
-        name: string;
-        bio: string;
-    }
-
-    interface Business {
-        name: string; 
-        address: string; 
-        number: string; 
-        stars: number;
-        review_count: number;
-        review: string;
-        postID: string; 
-    }
 
     // includes multiple objects
-    const [feed, setFeed] = useState([]);
+    const [feed, setFeed] = useState<Feed[]>([]);
     const [user, setUser] = useState<User[]>([]); 
     const [business, setBusiness ] = useState<Business[]>([]);
     

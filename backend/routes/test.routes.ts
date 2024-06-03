@@ -5,6 +5,8 @@ import { eq, lt, gte, ne } from 'drizzle-orm';
 import authMiddleware from "middleware/authMiddleware";
 import asyncMiddleware from "middleware/asyncMiddleware";
 import { like } from "drizzle-orm";
+import { v4 as uuidv4 } from 'uuid';
+
 
 const router = express.Router();
 
@@ -70,7 +72,8 @@ router.get("/user/:username/post", async (req, res) => {
 });
 
 // grabs the posts of followed members
-router.get("/feed", authMiddleware, asyncMiddleware(async (req, res) => {
+// router.get("/feed", authMiddleware, asyncMiddleware(async (req, res) => {
+router.get("/feed", async (req, res) => {
     try {
         let followingList: string[] = [];
         let feed: any[] = [];
@@ -123,7 +126,7 @@ router.get("/feed", authMiddleware, asyncMiddleware(async (req, res) => {
         res.status(404)
         throw new Error("feed not working:");
     }
-}));
+});
 
 // show followed members
 
@@ -150,5 +153,92 @@ router.get("/search/:query", async (req, res) => {
         res.send(error);
     }
 });
+
+// make a call to yelp api
+router.get("/yelp/:location?", async (req, res) => {
+    const location = req.params.location || 'Los Angeles'; // Default to 'Los Angeles' if no location is provided
+    const term = req.query.term || 'restaurants'; // Default to 'restaurants' if no term is provided
+    const categories = req.query.categories || 'restaurants';
+    const limit = req.query.limit || 10; // Default to 20 results if no limit is provided
+    const sortBy = req.query.sort_by || 'best_match';
+
+    const YELP_API_KEY = process.env.YELP_API_KEY;
+    
+    const url = `https://api.yelp.com/v3/businesses/search?location=${location}&term=${term}&categories=${categories}&limit=${limit}&sort_by=${sortBy}`;
+
+    const options = {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${YELP_API_KEY}`,
+            'Content-Type': 'application/json',
+        },
+    };
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`);
+        }
+        const data = await response.json();
+        res.send(data);
+    } catch (error) {
+        console.error('Error fetching data from Yelp API:', error);
+        res.status(500).send('Error fetching data from Yelp API');
+    }
+});
+
+// route to create a post
+router.post("/create-post", async (req, res) => {
+    const { businessData, review } = req.body; // extract name later
+    // console.log("businessData: ", businessData.name)
+    // console.log("review: ", review)
+
+    if (!businessData) {
+        return res.status(400).send({ message: "Invalid business request body" });
+    }
+    if (!review) {
+        return res.status(400).send({ message: "Invalid review request body" });
+    }
+
+    try {
+        // check if the business already exists in the database -- important for explore search
+        let existingBusiness = await db.select().from(business).where(eq(business.business_name, businessData.name)).limit(1).execute();
+
+        let businessId;
+
+        // if the business does not exist, insert it
+        if (existingBusiness.length === 0) {
+            businessId = uuidv4();
+            await db.insert(business).values({
+                id: businessId,
+                business_name: businessData.name,
+                address: businessData.location.address1,
+                phone_number: businessData.phone,
+                star_rating: businessData.rating,
+                review_count: businessData.review_count
+            }).execute();
+        } else {
+            businessId = existingBusiness[0].id;
+        }
+
+        // insert the post into the database
+        const postId = uuidv4();
+
+        await db.insert(post).values({
+            id: postId,
+            user_id: "123e4567-e89b-12d3-a456-426614174000", // MAKE SURE TO REPLACE WITH CURRENT USER
+            caption: " ",
+            review: review,
+            business_id: businessId,
+        }).execute();
+
+        res.status(201).send({ message: "Post created successfully" });
+
+    } catch (error) {
+        console.error('Error creating post:', error);
+        res.status(500).send('Error creating post');
+    }
+});
+
 
 export default router;
