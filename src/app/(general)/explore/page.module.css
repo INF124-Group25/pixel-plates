@@ -7,7 +7,7 @@
   }
   
   .topNav button {
-    background-color: #ff8c00; /* Orange color */
+    background-color: #ff8c00;
     border: none;
     color: white;
     padding: 8px 16px;
@@ -26,7 +26,7 @@
     width: 60%;
     padding: 12px;
     border: 1px solid #000000;
-    border-right: none; /* Remove right border */
+    border-right: none;
     font-size: 16px;
     border-radius: 5px;
     background-color: white;
@@ -37,7 +37,7 @@
     padding: 12px 16px;
     background-color: white;
     border: 1px solid #ccc;
-    border-left: none; /* Remove left border to merge with the input field */
+    border-left: none;
     cursor: pointer;
     font-size: 16px;
   }
@@ -61,9 +61,17 @@
     flex: 1;
     margin: 8px 0;
   }
+
+  .card h2 {
+    font-size: 18px;
+  }
+
+  .card p {
+    font-size: 14px;
+  }
   
   .directionsBtn {
-    background-color: #333; /* Dark grey */
+    background-color: #333;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -75,8 +83,8 @@
     flex-wrap: wrap;
 }
   .imagePlaceholder {
-    width: 10%; /* Adjust width as needed */
-    height: 100px; /* Adjust height as needed */
+    width: 10%;
+    height: 100px;
     background-color: #ccc;
     margin-bottom: 10px;
     display: flex;

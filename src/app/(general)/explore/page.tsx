@@ -49,6 +49,9 @@ const ExplorePage = () => {
             {results.length > 0 ? (
                 results.map((result, index) => (
                     <div key={index} className={styles.card}>
+                        {Array.from({ length: 4 }).map((_, imgIndex) => (
+                            <div key={imgIndex} className={styles.imagePlaceholder}></div> // Image placeholders
+                        ))}
                         <h2>{result.business_name}</h2>
                         <p>{result.address}</p>
                         <p>{result.phone_number}</p>
@@ -57,19 +60,7 @@ const ExplorePage = () => {
                     </div>
                 ))
             ) : (
-                Array.from({ length: 6 }).map((_, index) => (
-                    <div key={index} className={styles.card}>
-                        {Array.from({ length: 4 }).map((_, imgIndex) => (
-                            <div key={imgIndex} className={styles.imagePlaceholder}></div> // Image placeholders
-                        ))}            
-                        <h2>Cha For Tea - University Town Center</h2>
-                        <p>4187 Campus Dr Ste M173</p>
-                        <p>Irvine, CA 92612</p>
-                        <p>(949) 725-0300</p>
-                        <p>3.8 Stars (1009 Reviews)</p>
-                        <button className={styles.directionBtn}>Directions</button>
-                    </div>
-                ))
+                <p></p>
             )}
           </main>
         </div>
