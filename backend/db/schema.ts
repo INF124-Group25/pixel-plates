@@ -16,7 +16,7 @@ const user = pgTable("user", {
     email: varchar("email", { length: 255 }).unique().notNull(),
     password: varchar("password", { length: 255 }).notNull(),
     bio: text("bio").default(''),
-    profile_image_URL: varchar("profile_image_URL", { length: 255 }).default('placeholder'),
+    profile_image_URL: varchar("profile_image_URL", { length: 255 }).default('profile_picture/default-user.png'),
     created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -40,7 +40,7 @@ const post = pgTable("post", {
 const imageUrl = pgTable("image_Url", {
     id: uuid("id").defaultRandom().primaryKey(),
     post_id: uuid("post_id").references(() => post.id).notNull(),
-    url: varchar("url", { length: 255 }),
+    url: varchar("url", { length: 255 }).default('post_picture/default-post.png'),
     created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

@@ -29,9 +29,9 @@
     flex-direction: column;
 }
 
-.profileEditBoxForm .profileEditBoxFormFirstContainer div:last-child{
+/* .profileEditBoxForm .profileEditBoxFormFirstContainer div:last-child{
     margin-top: 2rem;
-}
+} */
 
 .profileEditBoxForm div:last-child{
     display: flex;

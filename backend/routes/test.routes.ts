@@ -6,9 +6,21 @@ import authMiddleware from "middleware/authMiddleware";
 import asyncMiddleware from "middleware/asyncMiddleware";
 import { like } from "drizzle-orm";
 import { v4 as uuidv4 } from 'uuid';
+import { test, upload, pictureResults } from "bucket/s3";
 
 
 const router = express.Router();
+
+router.get('/s3', asyncMiddleware(async(req, res, next) => {
+    const blob = await test();
+    res.setHeader('Content-Type', 'image/jpeg');
+    blob?.pipe(res);
+}));
+
+router.post('/image', authMiddleware, upload.single('profile_picture'), pictureResults);
+
+// router.post('/image', authMiddleware, upload.single('profile_picture'), pictureResults);
+
 
 const loggedInUser = "TheLink";
 

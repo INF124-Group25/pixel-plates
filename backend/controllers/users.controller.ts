@@ -6,6 +6,7 @@ import { hashPassword, comparePassword } from "utils/passwordManager";
 import { generate, verify } from "utils/jwtManager";
 import { LoginRequestBody, LoginResponseBody, MyUserRequestBody, RegisterRequestBody, UpdateUserRequestBody} from '~shared/types';
 import { getUserWithToken, updateUserWithUser } from "services/user.service";
+import { getPhoto } from "bucket/s3";
 
 const registerUser = asyncMiddleware(async (req, res, next) => {
     const { username, password, email } = req.body as RegisterRequestBody;
@@ -125,4 +126,13 @@ const updateUser = asyncMiddleware(async(req, res, next) => {
     res.status(200).send(changedUser);
 });
 
-export { registerUser, loginUser, getUserInfo, getMyUser, updateUser };
+
+const getProfilePhoto = asyncMiddleware(async(req, res, next) => {
+    const {Body, ContentType, Key} = await getPhoto(req.params.id);
+    res.setHeader('Content-Disposition', `attachment; filename="${Key}"`);
+    res.setHeader('Content-Type', ContentType);
+    res.send(Body);
+});
+
+
+export { registerUser, loginUser, getUserInfo, getMyUser, updateUser, getProfilePhoto };

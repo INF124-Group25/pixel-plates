@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { fetchUserProfile } from "@/services/api";
+import { fetchUserProfile, getUserPicture, getPictureWithKey } from "@/services/api";
 import { Context, UserContextType } from '@/components/UserContext';
 
 
@@ -16,13 +16,12 @@ const ProfileNav = () => {
     }
     const {user, loading, userToken, setUser, setUserToken, isUserAuthenticated, setupLocalUser} = userContext;
 
-    const defaultImage = "/default-user.png";
     
     
     const [name, setName] = useState('null');
     const [description, setDescription] = useState('null');
-    // const [image, setImage] = useState(defaultImage);
-    const image = defaultImage;
+    const defaultImage = getUserPicture('default-user.png');
+    const [image, setImage] = useState(defaultImage);
 
     const pathname = usePathname();
     const isViewProfileRouter = pathname === "/profile";
@@ -36,6 +35,7 @@ const ProfileNav = () => {
                 setName(user.username);
                 setDescription(user.bio || '');
                 // setImage(user.profile_image_URL || '');
+                setImage(user.profile_image_URL ? getPictureWithKey(user.profile_image_URL) : defaultImage);
             } catch (error) {
                 console.error("Error when initializing profile layout:", error);
             }
@@ -56,7 +56,7 @@ const ProfileNav = () => {
             <div className={styles.profileNavFirsttwocontainer}>
                 <div className={styles.profileNavInfo}>
                     <Image
-                        src={image || defaultImage}
+                        src={image}
                         alt="default user"
                         width={125}
                         height={125}

@@ -40,3 +40,7 @@ export type UpdateUserRequestBody = {
     bio:string;
     profile_image_URL: string;
 };
+
+export type PictureRequestBody = {
+    id: string;
+};

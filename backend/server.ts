@@ -1,11 +1,11 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import authRoutes from "./routes/auth.routes";
-import userRoutes from "./routes/user.routes";
-import testRoutes from "./routes/test.routes";
+import { authRoutes, userRoutes, postRoutes, testRoutes } from "routes";
 import { endClient } from "db/db";
 import errorMiddleware from "middleware/errorMiddleware";
+import { closeS3Client } from "bucket/s3";
+
 
 const app = express();
 app.use(cors());
@@ -15,6 +15,7 @@ const port = process.env.PORT || 5001;
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 app.use("/api/test", testRoutes);
 
 app.use(errorMiddleware);
@@ -39,6 +40,7 @@ const closeDatabaseConnection = async () => {
 const handleShutdown = async (signal: string) => {
     console.log(`Received ${signal}. Shutting down gracefully...`);
     await closeDatabaseConnection();
+    closeS3Client();
     server.close(() => {
         console.log("Server closed");
         process.exit(0);
