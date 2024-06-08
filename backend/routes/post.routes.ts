@@ -7,7 +7,7 @@ import { getPhotoPost } from "controllers/post.controller";
 const router = express.Router();
 
 
-router.post('/image', authMiddleware, upload.single('post_picture'), pictureResults);
+router.post('/image/:id', upload.single('post_picture'), pictureResults);
 router.get('/image/:id', getPhotoPost);
 
 

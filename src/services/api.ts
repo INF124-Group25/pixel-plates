@@ -81,7 +81,7 @@ export const uploadPicture = async(imageOutputFile:File | null, isPost:boolean, 
         formData.append('post_picture', imageOutputFile); 
         // formData.append('post_id', id);
     }
-    const url = isPost ? '/post/image' : `/user/image/${id}`;
+    const url = isPost ? `/post/image/${id}` : `/user/image/${id}`;
     const response = await fetchAPI(url, {
         method: 'POST',
         // headers: userHeader,
