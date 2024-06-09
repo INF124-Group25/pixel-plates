@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import Modal from './modal';
 import { SetStateAction, useState } from "react";
+import { UploadImage } from "@/components/UploadImage";
 
 type Business = {
   name: string;
@@ -29,6 +30,7 @@ const CreatePost = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
     const [review, setReview] = useState('');
+    const [postUrl, setPostUrl] = useState<string>()
 
 
     const handleOpenModal = () => {
@@ -68,7 +70,8 @@ const CreatePost = () => {
 
     const postData = {
         "businessData": selectedBusiness,
-        "review": review
+        "review": review,
+        "postUrl": postUrl
     };
 
     try {
@@ -144,8 +147,7 @@ const CreatePost = () => {
               <label htmlFor="upload-image">Upload Images</label>
                 <div className={styles.uploadPostBoxFormFirstContainer}>
                   <div className={styles.imageContainer}>
-                        <button className={styles.addImageBtn}>Camera</button>
-                        <input type="caption" name="caption" id="caption" placeholder="Add a caption ..."/>
+                        <UploadImage onUpload={setPostUrl}/>
                   </div>
                     <label htmlFor="review">Review</label>
                     <textarea name="review" id="review" cols={30} rows={10} placeholder={description} style={{width: '100%'}}  value={review} onChange={(e) => setReview(e.target.value)}></textarea>

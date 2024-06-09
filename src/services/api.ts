@@ -1,3 +1,5 @@
+import { writeFile } from 'fs/promises'
+import { NextRequest, NextResponse } from 'next/server'
 import { LoginResponseBody, UpdateUserRequestBody } from "~shared/types";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`;
@@ -81,6 +83,10 @@ export const uploadPicture = async(imageOutputFile:File | null, isPost:boolean, 
         formData.append('post_picture', imageOutputFile); 
         // formData.append('post_id', id);
     }
+
+    const bytes = await imageOutputFile.arrayBuffer()
+    const buffer = Buffer.from(bytes)
+
     const url = isPost ? `/post/image/${id}` : `/user/image/${id}`;
     const response = await fetchAPI(url, {
         method: 'POST',

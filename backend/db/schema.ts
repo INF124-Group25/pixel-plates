@@ -34,6 +34,7 @@ const post = pgTable("post", {
     business_id: uuid("business_id").notNull(),
     caption: varchar("caption", { length: 255 }),
     review: text("review"),
+    post_url: varchar("post_url", { length: 255 }),
     created_at: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 

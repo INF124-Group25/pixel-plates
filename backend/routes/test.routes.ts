@@ -201,7 +201,7 @@ router.get("/yelp/:location?", async (req, res) => {
 
 // route to create a post
 router.post("/create-post", async (req, res) => {
-    const { businessData, review } = req.body; // extract name later
+    const { businessData, review, postUrl } = req.body; // extract name later
     // console.log("businessData: ", businessData.name)
     // console.log("review: ", review)
 
@@ -227,7 +227,7 @@ router.post("/create-post", async (req, res) => {
                 address: businessData.location.address1,
                 phone_number: businessData.phone,
                 star_rating: businessData.rating,
-                review_count: businessData.review_count
+                review_count: businessData.review_count,
             }).execute();
         } else {
             businessId = existingBusiness[0].id;
@@ -242,6 +242,7 @@ router.post("/create-post", async (req, res) => {
             caption: " ",
             review: review,
             business_id: businessId,
+            post_url: postUrl
         }).execute();
 
         res.status(201).send({ message: "Post created successfully" });
