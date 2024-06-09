@@ -2,7 +2,7 @@
 #appFooter {
     display: flex;
     flex-direction: column;
-    background-color: rgb(203 213 225);
+    background-color: black;
     padding-top: 1rem;
     text-align: center;
     width:100%;
