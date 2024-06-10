@@ -81,11 +81,11 @@ export const uploadPicture = async(imageOutputFile:File | null, isPost:boolean, 
         formData.append('user_id', id);
     }else{
         formData.append('post_picture', imageOutputFile); 
-        // formData.append('post_id', id);
+        formData.append('post_id', id);
     }
 
-    const bytes = await imageOutputFile.arrayBuffer()
-    const buffer = Buffer.from(bytes)
+    // const bytes = await imageOutputFile.arrayBuffer()
+    // const buffer = Buffer.from(bytes);
 
     const url = isPost ? `/post/image/${id}` : `/user/image/${id}`;
     const response = await fetchAPI(url, {

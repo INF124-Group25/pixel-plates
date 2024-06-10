@@ -9,7 +9,9 @@ interface UploadImageProps {
 }
 
 
-export function UploadImage({ onUpload, onFileChange }: UploadImageProps) {
+// export function UploadImage({ onUpload, onFileChange }: UploadImageProps) {
+export function UploadImage({ handleFileChange  }: {handleFileChange:(file:File) => void }) {
+
   const [file, setFile] = useState<File>()
   const [previewUrl, setPreviewUrl] = useState<string>()
 
@@ -26,9 +28,13 @@ export function UploadImage({ onUpload, onFileChange }: UploadImageProps) {
   }, [file])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    if(!e.target.files ||  !e.target.files[0]){
+      console.error('no file being uploaded');
+      return;
+    }
+    const file = e.target.files[0];
     setFile(file);
-    onFileChange(file);
+    handleFileChange(file);
   };
   
   return (
@@ -38,7 +44,6 @@ export function UploadImage({ onUpload, onFileChange }: UploadImageProps) {
         name="file"
         // onChange={(e) => setFile(e.target.files?.[0])}
         onChange={handleChange}
-
       />
       {previewUrl && <img src={previewUrl} alt="Preview" style={{ width: '100px' }} />}
     </>

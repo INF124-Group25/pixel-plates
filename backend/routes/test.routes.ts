@@ -75,7 +75,7 @@ router.get("/user/:username/post", async (req, res) => {
         const userId = await db.select({ id: user.id }).from(user).where(eq(user.username, username));
         const posts = await db.select().from(post).where(eq(post.user_id, userId[0].id));
 
-        res.send([posts]);
+        res.send([posts]); // remove this in the future
         // console.log(posts);
     } catch (error) {
         // res.send(error).sendStatus(500);

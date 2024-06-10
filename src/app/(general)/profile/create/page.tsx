@@ -29,7 +29,7 @@ const CreatePost = () => {
     const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
     const [review, setReview] = useState('');
     const [postUrl, setPostUrl] = useState<string>()
-    const [file, setFile] = useState();
+    const [file, setFile] = useState<File | null>(null);
 
 
 
@@ -81,18 +81,21 @@ const CreatePost = () => {
     }
   };
 
+  // we have to fix this
   const onSubmit = async (postId: string) => {
-    if (!file) return
+    if (!file) {  
+      console.error('no image being provided for post');
+      return;
+    }
 
     try {
-      const data = new FormData()
-      data.set('file', file)
-
+      // const data = new FormData()
+      // data.set('file', file)
       // this will make it immediately upload to s3
       const res = await uploadPicture(file, true, postId);
-      if (res && res.location) {
-        console.log("here is location: ", res.location)
-        return res.location;
+      if (res && res.key) {
+        console.log("here is key: ", res.key);
+        return res.key;
       } else {
         console.error('Upload failed', res);
       }
@@ -104,7 +107,8 @@ const CreatePost = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
+  
     if (!selectedBusiness) {
         alert("Please select a business before submitting.");
         return;
@@ -136,15 +140,19 @@ const CreatePost = () => {
           // grab the postId with current no post_url
           const postResponse = await fetch('http://localhost:5001/api/test/user/erick/post'); // replace with current user
           const postInfo = await postResponse.json();
+          const lastPostId = postInfo[0][postInfo[0].length-1].id;
 
           console.log("whole postInfo: ", postInfo)
-          console.log("postInfo id: ", postInfo[0][postInfo[0].length-1].id)
+          console.log("postInfo id: ", lastPostId);
           // submit to aws the file and update post_url in post table
           if (file) {
-            onSubmit(file).then((newUrl) => {
+            try {
+              const newUrl = await onSubmit(lastPostId);
               setPostUrl(newUrl);
-              updatePostUrl(postInfo[0][postInfo[0].length-1].id, newUrl);
-            });
+              updatePostUrl(lastPostId, newUrl);
+            } catch (error) {
+              console.error(error);
+            }
           }
         }
 
@@ -163,6 +171,9 @@ const CreatePost = () => {
     }
 };
 
+const handleFileChange = (file:File) => {
+  setFile(file);
+};
 
     return (
             <div className={styles.uploadPostBox}>
@@ -198,7 +209,8 @@ const CreatePost = () => {
               <label htmlFor="upload-image">Upload Images</label>
                 <div className={styles.uploadPostBoxFormFirstContainer}>
                   <div className={styles.imageContainer}>
-                        <UploadImage onUpload={setPostUrl} onFileChange={setFile as React.Dispatch<React.SetStateAction<File | undefined>>}/>
+                        {/* <UploadImage onUpload={setPostUrl} onFileChange={setFile as React.Dispatch<React.SetStateAction<File | undefined>>}/> */}
+                        <UploadImage handleFileChange={handleFileChange}/>
                   </div>
                     <label htmlFor="review">Review</label>
                     <textarea name="review" id="review" cols={30} rows={10} placeholder={description} style={{width: '100%'}}  value={review} onChange={(e) => setReview(e.target.value)}></textarea>
