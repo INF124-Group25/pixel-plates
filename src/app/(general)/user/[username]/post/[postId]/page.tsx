@@ -1,43 +1,53 @@
+"use client"
 import styles from "./page.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from 'react';
+import { getPictureWithKey } from "@/services/api";
+
 
 const PostDetails = ({params} : {params: {postId: string}}) => {
-
-    
-    // return <h1> Details about post {params.postId}</h1>
-
-    const description = "I really recommend giving this place a try. The two items I got were popcorn chicken and brown sugar milk tea. I love the popcorn chicken from this place. Especially the sauce that they give to compliment the spiciness if you want to add a bit of sweetness. The boba here is really soft and chewy, their brown sugar milk tea is the best I’ve had in this area. 100% recommend!";
-    const restaurantName = "Cha For Tea - University Town Center"
-    const restaurantAddress = "4187 Campus Dr Ste M173 Irvine, CA 92612"
-    const restaurantNumber = "(949) 725-0300"
-    const restaurantRating = "3.8 Stars (1099 Reviews)"
-
+    const { postId } = params;
     const postImage = "/popcorn-chicken.png";
 
-    type posts = {
-        name: string;
-        imageSrc: string;
-    };
-    const postImages: posts[] = new Array(4).fill({
-        name: restaurantName,
-        imageSrc: postImage,
-    });
+    const [review, setReview] = useState<string>();
+    const [restaurantName, setRestaurantName] = useState<string>();
+    const [restaurantAddress, setRestaurantAddress] = useState<string>();
+    const [restaurantNumber, setRestaurantNumber ] = useState<string>();
+    const [restaurantRating, setRestaurantRating] = useState<string>();
+    const [imageSrc, setImageSrc] = useState(postImage);
 
 
-    const postForm = async(formData: FormData) => {
-      'use server'
-      const rawFormData = {
+    useEffect(() => {
+        fetchPostDetails(postId);
+    }, [postId]);
+    
 
-      };
+    const fetchPostDetails = async (post_id: string) => {
+        try {
+            const posts = await fetch(`http://localhost:5001/api/post/${post_id}`)
+            const postDetails = await posts.json();
+            setImageSrc(getPictureWithKey(postDetails[0].post_url ));
+            setReview(postDetails[0].review);
 
-      // mutate data
-      // revalidate cache
-    };
+            const business = await fetch(`http://localhost:5001/api/test/${postDetails[0].business_id}`)
+            const businessDetails = await business.json();
+            console.log(businessDetails);
+
+            setRestaurantAddress(businessDetails[0].address)
+            setRestaurantName(businessDetails[0].business_name)
+            setRestaurantNumber(businessDetails[0].phone_number)
+            setRestaurantRating(businessDetails[0].star_rating)
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
 
     return (
             <div className={styles.postBox}>
-                <h3>{restaurantName}</h3>
+                <h2>{restaurantName}</h2>
              <div className={styles.postHeader}>
                 <div>
                     <h6>{restaurantAddress}</h6>
@@ -52,19 +62,12 @@ const PostDetails = ({params} : {params: {postId: string}}) => {
               <div style={{ borderBottom: '1px solid black' }}></div>
                 <div className={styles.postBoxFormFirstContainer}>
                     <div className={styles.postPictures}>
-                        {postImages.map((image, index) => (
-                            <Link
-                                key={index}
-                                href={`/user/${params.postId}`}
-                                className={styles.postPicturesCards}
-                                style={{
-                                    backgroundImage: `url(${image.imageSrc})`,
-                                    borderRadius: '0px',
-                                    border: "0.01rem solid black",
-                                    margin: "20px"
-                                }}
-                            />
-                        ))}
+                    <Image
+                        src={imageSrc}
+                        alt="default user"
+                        width={125}
+                        height={125}
+                    />
                     </div>
                   <div style={{ borderBottom: '1px solid black' }}></div>
                  
@@ -80,7 +83,7 @@ const PostDetails = ({params} : {params: {postId: string}}) => {
                         minHeight: '100px', 
                         whiteSpace: 'pre-wrap' 
                     }}>
-                        {description}
+                        {review}
                     </div>                
                 </div>
                 <div>

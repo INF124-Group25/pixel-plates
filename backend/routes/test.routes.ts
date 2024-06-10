@@ -1,7 +1,7 @@
 import express from "express";
 import { db } from "db/db";
-import { user, post, User, userFollowing, business } from "db/schema";
-import { eq, lt, gte, ne } from 'drizzle-orm';
+import { user, post, userFollowing, business } from "db/schema";
+import { eq } from 'drizzle-orm';
 import authMiddleware from "middleware/authMiddleware";
 import asyncMiddleware from "middleware/asyncMiddleware";
 import { like } from "drizzle-orm";
@@ -265,6 +265,7 @@ router.post("/create-post", async (req, res) => {
     }
 });
 
+// updates post_url
 router.put('/post/:postId', async (req, res) => {
     const postId = req.params.postId;
     const newUrl = req.body.post_url;

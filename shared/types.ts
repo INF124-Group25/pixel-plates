@@ -54,3 +54,4 @@ export type RequestUserProfile = {
     profile_image_URL: string | null;
     created_at: Date;
 };
+
