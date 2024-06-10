@@ -41,4 +41,14 @@ const updateUserWithUser = async(userChanges:NewUser, isPasswordChanged:boolean,
     return updatedUser[0];
 };
 
-export { getUserWithToken, updateUserWithUser };
+const getUserWithId = async (id: string) => {
+    try {
+        const userRecord = await db.select().from(user).where(eq(user.id, id));
+        return userRecord[0];
+    } catch (error) {
+        console.error(`Failed to get user with id ${id}: ${error}`);
+        throw error; 
+    }
+};
+
+export { getUserWithToken, updateUserWithUser, getUserWithId };

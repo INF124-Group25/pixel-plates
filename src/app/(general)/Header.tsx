@@ -1,28 +1,23 @@
+import HeaderLinks from "@/components/HeaderLinks";
 import styles from "./Header.module.css";
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
     return (
         <header id={styles.appHeader}>
+            <Link href="/">
             <div className={styles.navBrandContainer}>
-                <Image
-                    src="/egg.png"
-                    alt="placeholder"
-                    width={100}
-                    height={100}
-                />
-                <h3> PixelPlates</h3>
+                    <Image
+                        src="/egg.png"
+                        alt="placeholder"
+                        width={100}
+                        height={100}
+                    />
+                <h3 style={{color:'white'}}> PixelPlates</h3>
             </div>
-
-            <nav className={styles.navContainer}>
-                {/* <a href="/">Home</a> */}
-                <a href="/explore">Explore</a>
-                <a href="/profile/create">Create</a>
-                <a href="/profile">Profile</a>
-                <a href="/feed">Feed</a>
-                <a href="/login">Login</a>
-                
-            </nav>
+            </Link>
+            <HeaderLinks />
         </header>
     );
 };

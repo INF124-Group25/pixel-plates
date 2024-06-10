@@ -44,3 +44,13 @@ export type UpdateUserRequestBody = {
 export type PictureRequestBody = {
     id: string;
 };
+
+export type RequestUserProfile = {
+    id: string;
+    username: string;
+    email: string;
+    password: string;
+    bio: string | null;
+    profile_image_URL: string | null;
+    created_at: Date;
+};

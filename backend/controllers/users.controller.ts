@@ -5,7 +5,7 @@ import asyncMiddleware from "middleware/asyncMiddleware";
 import { hashPassword, comparePassword } from "utils/passwordManager";
 import { generate, verify } from "utils/jwtManager";
 import { LoginRequestBody, LoginResponseBody, MyUserRequestBody, RegisterRequestBody, UpdateUserRequestBody} from '~shared/types';
-import { getUserWithToken, updateUserWithUser } from "services/user.service";
+import { getUserWithId, getUserWithToken, updateUserWithUser } from "services/user.service";
 import { getPhoto } from "bucket/s3";
 
 const registerUser = asyncMiddleware(async (req, res, next) => {
@@ -99,30 +99,26 @@ const getMyUser = asyncMiddleware(async(req, res, next) => {
 
 const updateUser = asyncMiddleware(async(req, res, next) => {
     const userReq = req.user;
-    if(!userReq){
+    if(!userReq || !req.user){
         res.status(401);
         throw new Error('No request.user field');
     }
-    const id = req.params.id;
-    if (userReq.id.toString() !== id) {
-        res.status(401);
-        throw new Error("Not authorized, invalid user");
-    }
+    const userRecord = await getUserWithId(req.user.id);
     const updateUser = req.body as UpdateUserRequestBody;
     const passwordInEditRequest = updateUser.password.length > 0;
     let userPut:NewUser;
     userPut = {
-        username: updateUser.username || userReq.username,
+        username: updateUser.username || userRecord.username,
         password: '',
-        email:updateUser.username || userReq.email,
-        bio:updateUser.bio || userReq.bio,
-        profile_image_URL: updateUser.profile_image_URL || userReq.profile_image_URL,
+        email:updateUser.username || userRecord.email,
+        bio:updateUser.bio || userRecord.bio,
+        profile_image_URL: updateUser.profile_image_URL || userRecord.profile_image_URL,
     }
     if(passwordInEditRequest){
         updateUser.password = await hashPassword(updateUser.password);
         userPut.password = updateUser.password;
     }
-    const changedUser = await updateUserWithUser(userPut, passwordInEditRequest, id);
+    const changedUser = await updateUserWithUser(userPut, passwordInEditRequest, userRecord.id);
     res.status(200).send(changedUser);
 });
 
@@ -133,6 +129,7 @@ const getProfilePhoto = asyncMiddleware(async(req, res, next) => {
     res.setHeader('Content-Type', ContentType);
     res.send(Body);
 });
+
 
 
 export { registerUser, loginUser, getUserInfo, getMyUser, updateUser, getProfilePhoto };

@@ -1,6 +1,6 @@
 import { writeFile } from 'fs/promises'
 import { NextRequest, NextResponse } from 'next/server'
-import { LoginResponseBody, UpdateUserRequestBody } from "~shared/types";
+import { LoginResponseBody, RequestUserProfile, UpdateUserRequestBody } from "~shared/types";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`;
 const userHeader = {
@@ -17,7 +17,7 @@ export const fetchAPI = async (url: string, options = {}) => {
 
 export const fetchUserProfile = async() => {
     try {
-        const data: LoginResponseBody = await fetchAPI('/user/me', { headers: userHeader });
+        const data: RequestUserProfile = await fetchAPI('/user/profile', { headers: userHeader });
         console.log('data:', data); // TESTING
         return data;
     } catch (error) {
@@ -25,9 +25,9 @@ export const fetchUserProfile = async() => {
     }
 };
 
-export const updateUserProfile = async(id:string, newUserRequest:UpdateUserRequestBody) => {
+export const updateUserProfile = async(newUserRequest:UpdateUserRequestBody) => {
     try {
-        const data: LoginResponseBody = await fetchAPI(`/user/${id}`, {
+        const data: LoginResponseBody = await fetchAPI(`/user/profile`, {
             method:"PUT",
             headers: userHeader,
             body: JSON.stringify(newUserRequest),

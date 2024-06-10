@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import styles from "./layout.module.css";
 import ProfileNav from "./ProfileNav";
-import UserContext from '@/components/UserContext';
 
 export const metadata: Metadata = {
     title: "PixelPlates",
@@ -16,10 +15,8 @@ export default function ProfileLayout({
 }>) {
     return (
         <main className={styles.profile}>
-            <UserContext >
-                <ProfileNav />
-                <section className={styles.profileEditBox}>{children}</section>
-            </UserContext>
+            <ProfileNav />
+            <section className={styles.profileEditBox}>{children}</section>
         </main>
     );
 }

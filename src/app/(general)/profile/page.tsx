@@ -5,8 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { fetchUserProfile, getUserPicture, getPictureWithKey } from "@/services/api";
-import { Context, UserContextType } from '@/components/UserContext';
 import PostsList from "@/components/PostsList";
+import { Context } from '@/components/UserContext';
 
 const ProfilePage = () => {
     const postName = "Cha For Tea - University Town Center";
@@ -17,29 +17,19 @@ const ProfilePage = () => {
     if(!userContext){
         throw new Error('context should be loaded within a context provider');
     }
-    const {user, loading, userToken, setUser, setUserToken, isUserAuthenticated, setupLocalUser} = userContext;
+    const {
+        user,
+    } = userContext;
 
     
     
-    const [name, setName] = useState('null');
+    const [name, setName] = useState('');
 
-    useEffect(()=>{
-        const fetchUserInfo = async() => {
-            try {
-                const user = await fetchUserProfile();
-                setName(user.username);
-            } catch (error) {
-                console.error("Error when initializing profile layout:", error);
-            }
-        };
-        fetchUserInfo();
-        setupLocalUser();
-    },[]);
-
-    useEffect(()=>{
-        if(!user) return;
-        setName(user.username);
-    },[user, userToken]);
+    useEffect(() => {
+        if (user) {
+            setName(user.username);
+        }
+    }, [user]);
 
     type posts = {
         name: string;
@@ -66,7 +56,3 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
-
-{
-    /* <Image key={index} src={postImage} alt={postName} width={100} height={100}/> */
-}
