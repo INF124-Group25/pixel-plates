@@ -153,6 +153,18 @@ router.get("/:business_id", async (req, res) => {
     }
 });
 
+router.get("/business_post/:business_id", async (req, res) => {
+    try {
+        const businessId = req.params.business_id;
+        const posts = await db.select().from(post).where(eq(post.business_id, businessId));
+        res.send(posts);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+
+
+
 router.get("/search/:query", async (req, res) => {
     try {
         const query = req.params.query;
