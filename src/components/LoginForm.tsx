@@ -42,8 +42,9 @@ const LoginForm = ()=> {
                 console.log("Login submitted", { username, password });
                 notifyUserloginSuccess();
                 router.push('/profile');
-
-                
+                setTimeout(() => {
+                    router.push('/profile');
+                }, 500);
             } catch (error) {
                 notifyUserloginFailure();
                 console.error("Error when logging in:", error);

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import "../globals.css";
 import styles from "./layout.module.css";
 
@@ -17,7 +18,7 @@ export default function RootLayout({
                 <main className={styles.main}>
                     <div className={styles.loginBox}>{children}</div>
                     <button className={styles.registerButton}>
-                        Try as guest
+                        <Link href="/explore" style={{color:'black'}}>Try as guest</Link>
                     </button>
                 </main>
             </body>

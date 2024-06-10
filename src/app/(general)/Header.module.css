@@ -13,6 +13,21 @@
     text-align: center;
 }
 
+.logoutButton{
+  font-family: var(--font-mono);
+  color:white;
+  background-color: transparent;
+  border: none; 
+  font-size:1rem;
+  cursor: pointer;
+}
+.logoutButton:hover{
+  text-decoration: underline; 
+}
+.logoutButton:active{
+  background-color: rgba(128, 128, 128, 0.5);
+}
+
 .navContainer{
     display: flex;
     flex-direction: column;

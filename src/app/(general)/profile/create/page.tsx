@@ -3,8 +3,9 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import Modal from './modal';
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useState, useEffect } from "react";
 import { UploadImage } from "@/components/UploadImage";
+import { fetchUserProfile } from "@/services/api";
 import { getPostPicture, uploadPicture } from '@/services/api'
 
 
@@ -174,6 +175,7 @@ const CreatePost = () => {
 const handleFileChange = (file:File) => {
   setFile(file);
 };
+
 
     return (
             <div className={styles.uploadPostBox}>

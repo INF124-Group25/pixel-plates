@@ -2,7 +2,7 @@
 "use client";
 import s from "@/app/(general)/profile/edit/page.module.css";
 import { fetchAPI, fetchUserProfile, updateUserProfile, uploadPicture } from "@/services/api";
-import { useContext, useEffect, useRef, useState } from "react";
+import { use, useContext, useEffect, useRef, useState } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginResponseBody, UpdateUserRequestBody } from "~shared/types";
@@ -19,11 +19,8 @@ const EditProfile = () => {
     const {
         user,
         loading,
-        userToken,
-        setUser,
-        setUserToken,
-        isUserAuthenticated,
-        setupLocalUser,
+        login, 
+        logout
     } = userContext;
 
     const [id, setId] = useState("");
@@ -35,20 +32,6 @@ const EditProfile = () => {
 
     const [avatarOutputFile, setAvatarOutputFile] = useState<File | null>(null);
 
-    // const uploadProfilePicture = () => {
-    //     if(avatarOutputFile === null){
-    //         console.error('No Upload Profile Picutre');
-    //         return;
-    //     }
-    //     const formData = new FormData();
-    //     formData.append('profile_picture', avatarOutputFile); 
-    //     formData.append('user_id', id);
-
-    //     const response = fetchAPI('/test/image', {
-    //         method: 'POST',
-    //         body: formData
-    //     });
-    // };
 
     const uploadProfilePicture = async() => {
         if(id.length === 0){
@@ -106,14 +89,17 @@ const EditProfile = () => {
                     bio: bio,
                     profile_image_URL: key || `profile_picture/default-user.png`,
                 };
-                const newUserResponse = await updateUserProfile(id, newUser);
+                const newUserResponse = await updateUserProfile(newUser);
                 console.log("newUserResponse:", newUserResponse);
-                setUsername(newUserResponse.username);
-                setEmail(newUserResponse.email);
-                setBio(newUserResponse.bio || "");
+                // restart context
+                logout();
+                login();
+                // setUsername(newUserResponse.username);
+                // setEmail(newUserResponse.email);
+                // setBio(newUserResponse.bio || "");
                 // setAvatar(newUserResponse.profile_image_URL || "");
-                localStorage.setItem("user", JSON.stringify(newUserResponse)); //TESTING
-                setUser(newUserResponse);
+                // localStorage.setItem("user", JSON.stringify(newUserResponse)); //TESTING
+                // setUser(newUserResponse);
                 notifySuccessProfileEdit();
             } catch (error) {
                 console.error("Failed updating profile:", error);
@@ -124,29 +110,13 @@ const EditProfile = () => {
     };
 
     useEffect(() => {
-        const initialProfileFetch = async () => {
-            try {
-                const data = await fetchUserProfile();
-                setId(data.id);
-                setUsername(data.username);
-                setEmail(data.email);
-                setBio(data.bio || "");
-                // setAvatar(data.profile_image_URL || "");
-                setupLocalUser();
-            } catch (error) {
-                console.error("Failed initializing edit profile:", error);
-            }
+        if (user){
+            setId(user.id);
+            setUsername(user.username);
+            setEmail(user.email);
+            setBio(user.bio || "");
         };
-        initialProfileFetch();
-    }, []);
-
-    useEffect(() => {
-        if (!user) return;
-        setUsername(user.username);
-        setEmail(user.email);
-        // setAvatar(user.profile_image_URL || '');
-        setBio(user.bio || "");
-    }, [user, userToken]);
+    },[user]);
 
     return (
         <form className={s.profileEditBoxForm} onSubmit={handleEditProfileForm}>

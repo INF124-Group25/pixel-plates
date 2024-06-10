@@ -5,8 +5,9 @@ import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { fetchUserProfile, getUserPicture, getPictureWithKey } from "@/services/api";
-import { Context, UserContextType } from '@/components/UserContext';
+import { getUserPicture, getPictureWithKey } from "@/services/api";
+import { Context } from '@/components/UserContext';
+import { TrophySpin } from "react-loading-indicators";
 
 
 const ProfileNav = () => {
@@ -14,10 +15,9 @@ const ProfileNav = () => {
     if(!userContext){
         throw new Error('context should be loaded within a context provider');
     }
-    const {user, loading, userToken, setUser, setUserToken, isUserAuthenticated, setupLocalUser} = userContext;
 
-    
-    
+    const {user, loading, login, setLoading, redirectToLogin} = userContext;
+
     const [name, setName] = useState('null');
     const [description, setDescription] = useState('null');
     const defaultImage = getUserPicture('default-user.png');
@@ -27,30 +27,30 @@ const ProfileNav = () => {
     const isViewProfileRouter = pathname === "/profile";
     // const isUserProfilePage ==== maybe use a cookie or something with auth ?
 
-
+    
     useEffect(()=>{
-        const fetchUserInfo = async() => {
-            try {
-                const user = await fetchUserProfile();
+        const fetchData = async () => {
+            if(loading)return;
+            if(user) {
                 setName(user.username);
                 setDescription(user.bio || '');
-                // setImage(user.profile_image_URL || '');
                 setImage(user.profile_image_URL ? getPictureWithKey(user.profile_image_URL) : defaultImage);
-            } catch (error) {
-                console.error("Error when initializing profile layout:", error);
+            }else{
+                redirectToLogin();
+                console.log('user is null');// TESTING
             }
         };
-        fetchUserInfo();
-        setupLocalUser();
-    },[]);
+        fetchData();
+    },[user]);
 
-    useEffect(()=>{
-        if(!user) return;
-        setName(user.username);
-        setDescription(user.bio || '');
-    },[user, userToken]);
-
-
+    if(loading){
+        return (
+            <section className={styles.profileNav}>
+                <TrophySpin color="#cfcb58" size="medium" text="yum" textColor="" />
+            </section>
+        );
+    }
+    
     return (
         <section className={styles.profileNav}>
             <div className={styles.profileNavFirsttwocontainer}>
