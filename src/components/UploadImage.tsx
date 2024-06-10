@@ -3,7 +3,13 @@
 import { uploadPicture } from '@/services/api'
 import { useState, useEffect } from 'react'
 
-export function UploadImage({ onUpload }: { onUpload: (location: string) => void }) {
+interface UploadImageProps {
+  onUpload: (location: string) => void;
+  onFileChange: (file: File | undefined) => void;
+}
+
+
+export function UploadImage({ onUpload, onFileChange }: UploadImageProps) {
   const [file, setFile] = useState<File>()
   const [previewUrl, setPreviewUrl] = useState<string>()
 
@@ -19,35 +25,23 @@ export function UploadImage({ onUpload }: { onUpload: (location: string) => void
     return () => URL.revokeObjectURL(objectUrl)
   }, [file])
 
-  const onSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    if (!file) return
-
-    try {
-      const data = new FormData()
-      data.set('file', file)
-
-      // this will make it immediately upload to s3
-      const res = await uploadPicture(file, true, "d46f491a-6630-4091-927e-1d14a8148e8d");
-      onUpload(res.location)
-
-      // handle the error
-      if (!res.ok) throw new Error(await res.text())
-    } catch (e: any) {
-      // Handle errors here
-      console.error(e)
-    }
-  }
-
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    setFile(file);
+    onFileChange(file);
+  };
+  
   return (
     <>
       <input
         type="file"
         name="file"
-        onChange={(e) => setFile(e.target.files?.[0])}
+        // onChange={(e) => setFile(e.target.files?.[0])}
+        onChange={handleChange}
+
       />
       {previewUrl && <img src={previewUrl} alt="Preview" style={{ width: '100px' }} />}
-      <button onClick={onSubmit}> Upload</button>
     </>
   )
 }
+

@@ -5,6 +5,8 @@ import Image from "next/image";
 import Modal from './modal';
 import { SetStateAction, useState } from "react";
 import { UploadImage } from "@/components/UploadImage";
+import { getPostPicture, uploadPicture } from '@/services/api'
+
 
 type Business = {
   name: string;
@@ -19,11 +21,7 @@ type Business = {
 
 
 const CreatePost = () => {
-    const name = "JonnieEats";
     const description = "Add your review ...";
-    const imageSrc = "/default-user.png";
-    const password = "password";
-
     const [modalVisible, setModalVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [location, setLocation] = useState('');
@@ -31,6 +29,8 @@ const CreatePost = () => {
     const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
     const [review, setReview] = useState('');
     const [postUrl, setPostUrl] = useState<string>()
+    const [file, setFile] = useState();
+
 
 
     const handleOpenModal = () => {
@@ -60,6 +60,48 @@ const CreatePost = () => {
     }
   };
 
+  const updatePostUrl = async (postId: string, newUrl: string) => {
+    try {
+      const response = await fetch(`http://localhost:5001/api/test/post/${postId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ "post_url": newUrl }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to update post URL');
+      }
+  
+      const updatedPost = await response.json();
+      return updatedPost;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onSubmit = async (postId: string) => {
+    if (!file) return
+
+    try {
+      const data = new FormData()
+      data.set('file', file)
+
+      // this will make it immediately upload to s3
+      const res = await uploadPicture(file, true, postId);
+      if (res && res.location) {
+        console.log("here is location: ", res.location)
+        return res.location;
+      } else {
+        console.error('Upload failed', res);
+      }
+    } catch (e: any) {
+      // Handle errors here
+      console.error(e)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -87,14 +129,33 @@ const CreatePost = () => {
         });
 
         if (!response.ok) {
-            throw new Error("Error creating post");
+          throw new Error("Error creating post");
         }
 
-        alert("Post submitted successfully!");
+        else if(response.ok){
+          // grab the postId with current no post_url
+          const postResponse = await fetch('http://localhost:5001/api/test/user/erick/post'); // replace with current user
+          const postInfo = await postResponse.json();
+
+          console.log("whole postInfo: ", postInfo)
+          console.log("postInfo id: ", postInfo[0][postInfo[0].length-1].id)
+          // submit to aws the file and update post_url in post table
+          if (file) {
+            onSubmit(file).then((newUrl) => {
+              setPostUrl(newUrl);
+              updatePostUrl(postInfo[0][postInfo[0].length-1].id, newUrl);
+            });
+          }
+        }
+
 
         // Clear the form
         setSelectedBusiness(null);
         setReview('');
+
+        alert("Post submitted successfully!");
+        // console.log("Post submitted successfully!");
+
 
     } catch (error) {
         console.error("Error submitting post:", error);
@@ -102,17 +163,6 @@ const CreatePost = () => {
     }
 };
 
-
-
-    const uploadPostForm = async (formData: FormData) => {
-      // 'use server'
-      const rawFormData = {
-          // handle form data
-      };
-
-      // mutate data
-      // revalidate cache
-  };
 
     return (
             <div className={styles.uploadPostBox}>
@@ -143,11 +193,12 @@ const CreatePost = () => {
                 )}
                 </div>
                 
-              <form onSubmit={handleSubmit} className={styles.uploadPostBoxForm}>
+              <form onSubmit={handleSubmit} className={styles.uploadPostBoxForm}
+              >
               <label htmlFor="upload-image">Upload Images</label>
                 <div className={styles.uploadPostBoxFormFirstContainer}>
                   <div className={styles.imageContainer}>
-                        <UploadImage onUpload={setPostUrl}/>
+                        <UploadImage onUpload={setPostUrl} onFileChange={setFile as React.Dispatch<React.SetStateAction<File | undefined>>}/>
                   </div>
                     <label htmlFor="review">Review</label>
                     <textarea name="review" id="review" cols={30} rows={10} placeholder={description} style={{width: '100%'}}  value={review} onChange={(e) => setReview(e.target.value)}></textarea>

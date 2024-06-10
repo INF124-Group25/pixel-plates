@@ -238,7 +238,7 @@ router.post("/create-post", async (req, res) => {
 
         await db.insert(post).values({
             id: postId,
-            user_id: "123e4567-e89b-12d3-a456-426614174000", // MAKE SURE TO REPLACE WITH CURRENT USER
+            user_id: "c837cf80-4e95-4d09-bcd1-2805dafcef7a", // MAKE SURE TO REPLACE WITH CURRENT USER
             caption: " ",
             review: review,
             business_id: businessId,
@@ -250,6 +250,27 @@ router.post("/create-post", async (req, res) => {
     } catch (error) {
         console.error('Error creating post:', error);
         res.status(500).send('Error creating post');
+    }
+});
+
+router.put('/post/:postId', async (req, res) => {
+    const postId = req.params.postId;
+    const newUrl = req.body.post_url;
+
+    if (!newUrl) {
+        return res.status(400).send({ message: 'New URL is required' });
+    }
+
+    try {
+        await db.update(post)
+            .set({ post_url: newUrl })
+            .where(eq(post.id, postId))
+            .execute();
+
+        res.status(200).send({ message: 'Post URL updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Error updating post URL' });
     }
 });
 

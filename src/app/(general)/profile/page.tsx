@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { fetchUserProfile, getUserPicture, getPictureWithKey } from "@/services/api";
 import { Context, UserContextType } from '@/components/UserContext';
+import PostsList from "@/components/PostsList";
 
 const ProfilePage = () => {
     const postName = "Cha For Tea - University Town Center";
@@ -48,24 +49,14 @@ const ProfilePage = () => {
         name: postName,
         imageSrc: postImage,
     });
+    
 
     return (
         <div className={styles.profile}>
             <h1>{name}</h1>
             {postImages && postImages.length > 0 ? (
                 <div className={styles.profilePosts}>
-                    {postImages.map((image, index) => (
-                        <Link
-                            key={index}
-                            href={`/user/${name}/post/${postId}`}
-                            className={styles.profilePostCards}
-                            style={{
-                                backgroundImage: `url(${image.imageSrc})`,
-                                borderRadius: '0px',
-                                border: "1px solid black",
-                            }}
-                        />
-                    ))}
+                    <PostsList />
                 </div>
             ) : (
                 <h2>No Images posted yet!</h2>
