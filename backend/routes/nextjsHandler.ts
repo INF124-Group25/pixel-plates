@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import URL from 'url';
-import nextapp from '$/index';
+import nextapp from '../../index';
 
 const router = Router();
 const handler = nextapp.getRequestHandler();

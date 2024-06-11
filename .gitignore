@@ -18,6 +18,9 @@
 # production
 /build
 
+# compiled typescript
+/backend/dist/
+
 # misc
 .DS_Store
 *.pem
