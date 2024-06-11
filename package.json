@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npm i && cd backend && npm i && tsc && cd .. && next build",
-    "start": "node backend/server.js",
+    "old-build": "npm i && cd backend && npm i && tsc && cd .. && next build",
+    "build": "npm i && cd backend && npm i && cd .. && next build",
+    "old-start": "node backend/server.js",
+    "start": "npx tsx backend/server.js",
     "next-start": "next start",
+    "next-build": "next build",
     "lint": "next lint",
     "launch": "concurrently \"cd backend && npm run dev\" \"npm run dev\""
   },
@@ -20,7 +23,7 @@
     "react-image-crop": "^11.0.5",
     "react-loading-indicators": "^0.2.3",
     "react-toastify": "^10.0.5",
-    "tsx": "^4.10.5",
+    "tsx": "^4.15.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
