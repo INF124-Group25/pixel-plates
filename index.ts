@@ -4,7 +4,7 @@ import { resolve, dirname } from "path";
 import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const dev = process.env.NODE_ENV !== "production";
+const dev = process.env.NODE_ENV !== "test";
 let nextDir = __dirname;
 if (nextDir.indexOf("/dist") !== -1) {
     nextDir = resolve(__dirname, "../");

@@ -4,7 +4,7 @@ const errorMiddleware: ErrorAsyncFunction = (err:Error, req:Request, res:Respons
     const errorObject = {
         message: err.message,
         stack:
-            process.env.NODE_ENV === "production"
+            process.env.NODE_ENV === "test"
                 ? undefined
                 : err.stack
     };
