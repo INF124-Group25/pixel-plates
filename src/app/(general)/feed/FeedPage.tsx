@@ -4,7 +4,7 @@ import styles from "./page.module.css";
 import FollowerCard from "../profile/following/Card";
 import PostCard from "./FeedPost";
 import { useEffect, useState } from "react";
-import { fetchAPI } from "@/services/api";
+import { fetchAPI } from "../../../services/api";
 
 interface User {
     id: string;

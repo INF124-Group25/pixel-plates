@@ -3,10 +3,9 @@
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import styles from "./layout.module.css";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import publicLoader from "@/services/publicLoader";
-import { fetchAPI } from "@/services/api";
+import publicLoader from "../../../services/publicLoader";
+import { fetchAPI } from "../../../services/api";
 
 
 const ProfileNav = () => {

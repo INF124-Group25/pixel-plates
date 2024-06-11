@@ -1,11 +1,9 @@
 "use client"
 
 import styles from "./page.module.css";
-import Image from "next/image";
-import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import PostsList from "@/components/PostsList";
-import { Context } from '@/components/UserContext';
+import PostsList from "../../../components/PostsList";
+import { Context } from '../../../components/UserContext';
 
 const ProfilePage = () => {
     const postName = "Cha For Tea - University Town Center";

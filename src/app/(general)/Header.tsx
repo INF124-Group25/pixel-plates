@@ -1,8 +1,8 @@
-import HeaderLinks from "@/components/HeaderLinks";
+import HeaderLinks from "../../components/HeaderLinks";
 import styles from "./Header.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import publicLoader from '@/services/publicLoader';
+import publicLoader from '../../services/publicLoader';
 const Header = () => {
     return (
         <header id={styles.appHeader}>

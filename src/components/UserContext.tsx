@@ -1,7 +1,7 @@
 "use client";
-import { fetchAPI, fetchUserProfile } from "@/services/api";
+import { fetchAPI, fetchUserProfile } from "../services/api";
 import { createContext, useEffect, useState } from "react";
-import { RequestUserProfile } from "~shared/types";
+import { RequestUserProfile } from "../../shared/types";
 import { useRouter } from "next/navigation";
 export type UserContextType = {
     user: RequestUserProfile | null;

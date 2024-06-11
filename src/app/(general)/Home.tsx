@@ -1,9 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import styles from "./page.module.css";
 import { useEffect, useState } from "react";
-import { fetchAPI } from "@/services/api";
+import { fetchAPI } from "../../services/api";
 
 export default function Home() {
     const [username, setUsername] = useState("no name yet");

@@ -1,11 +1,10 @@
 "use client";
 
 import styles from "./page.module.css";
-import Image from "next/image";
 import Modal from './modal';
-import { SetStateAction, useState, useEffect } from "react";
-import { UploadImage } from "@/components/UploadImage";
-import { fetchAPI, uploadPicture } from '@/services/api'
+import { useState } from "react";
+import { UploadImage } from "../../../../components/UploadImage";
+import { fetchAPI, uploadPicture } from '../../../../services/api'
 
 
 type Business = {

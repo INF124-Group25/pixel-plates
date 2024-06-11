@@ -3,12 +3,12 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
-import s from '@/app/(auth)/layout.module.css';
+import s from '../app/(auth)/layout.module.css';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { fetchAPI } from "@/services/api";
-import { LoginResponseBody } from "~shared/types";
-import publicLoader  from "@/services/publicLoader";
+import { fetchAPI } from "../services/api";
+import { LoginResponseBody } from "../../shared/types";
+import publicLoader  from "../services/publicLoader";
 
 
 const LoginForm = ()=> {

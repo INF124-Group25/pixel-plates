@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import Header from "@/app/(general)/Header";
-import Footer from "@/app/(general)/Footer";
-// import UserContext from "@/components/UserContext";
+import Header from "../../app/(general)/Header";
+import Footer from "../../app/(general)/Footer";
 import dynamic from "next/dynamic";
-const UserContext = dynamic(() => import('@/components/UserContext'), { ssr: false })
+const UserContext = dynamic(() => import('../../components/UserContext'), { ssr: false })
 
 
 // const inter = Inter({ subsets: ["latin"] });

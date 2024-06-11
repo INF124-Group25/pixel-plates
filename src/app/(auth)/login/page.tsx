@@ -1,6 +1,6 @@
 import styles from "../layout.module.css";
 import dynamic from "next/dynamic";
-const LoginForm = dynamic(() => import('@/components/LoginForm'), { ssr: false })
+const LoginForm = dynamic(() => import('../../../components/LoginForm'), { ssr: false })
 
 export default function Login() {
 

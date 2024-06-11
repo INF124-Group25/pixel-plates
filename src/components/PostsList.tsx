@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchAPI, getPictureWithKey, getPostPicture, getUserPicture } from '@/services/api';
+import { fetchAPI, getPictureWithKey, getPostPicture, getUserPicture } from '../services/api';
 import Image from 'next/image';
 import Link from 'next/link';
 

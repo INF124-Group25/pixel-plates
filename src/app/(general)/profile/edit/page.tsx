@@ -1,4 +1,4 @@
-import EditProfile from "@/components/EditProfile";
+import EditProfile from "../../../../components/EditProfile";
 import styles from "./page.module.css";
 
 const ProfileEdit = () => {

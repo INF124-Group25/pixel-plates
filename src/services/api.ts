@@ -1,7 +1,5 @@
 'use client';
-import { writeFile } from 'fs/promises'
-import { NextRequest, NextResponse } from 'next/server'
-import { LoginResponseBody, RequestUserProfile, UpdateUserRequestBody } from "~shared/types";
+import { LoginResponseBody, RequestUserProfile, UpdateUserRequestBody } from "../../shared/types";
 
 const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`;
 const userHeader = {

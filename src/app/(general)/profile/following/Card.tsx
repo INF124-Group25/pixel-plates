@@ -3,7 +3,6 @@
 import Link from "next/link";
 import style from "./page.module.css";
 import Image from "next/image";
-import { createContext } from 'react'
 
 // const Context = createContext();
 

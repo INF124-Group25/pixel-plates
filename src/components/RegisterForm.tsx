@@ -1,13 +1,13 @@
 'use client'
 import Link from "next/link";
-import s from "@/app/(auth)/layout.module.css";
+import s from "../app/(auth)/layout.module.css";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { fetchAPI } from '@/services/api'
-import { RegisterResponseBody } from "~shared/types";
+import { fetchAPI } from '../services/api'
+import { RegisterResponseBody } from "../../shared/types";
 
 
 const RegisterForm = () => {

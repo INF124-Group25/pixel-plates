@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useContext } from "react";
-import s from "@/app/(general)/Header.module.css";
-import { Context } from "@/components/UserContext";
+import s from "../app/(general)/Header.module.css";
+import { Context } from "./UserContext";
 import { useRouter } from "next/navigation";
 
 const HeaderLinks = () => {

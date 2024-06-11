@@ -5,8 +5,8 @@ import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { getUserPicture, getPictureWithKey } from "@/services/api";
-import { Context } from '@/components/UserContext';
+import { getUserPicture, getPictureWithKey } from "../../../services/api";
+import { Context } from '../../../components/UserContext';
 import { TrophySpin } from "react-loading-indicators";
 
 

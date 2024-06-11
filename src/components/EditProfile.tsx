@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import s from "@/app/(general)/profile/edit/page.module.css";
-import { updateUserProfile, uploadPicture } from "@/services/api";
+import s from '../app/(general)/profile/edit/page.module.css';
+import { updateUserProfile, uploadPicture } from "../services/api"
 import { use, useContext, useEffect, useState } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { UpdateUserRequestBody } from "~shared/types";
+import { UpdateUserRequestBody } from "../../shared/types";
 import { Context } from "./UserContext";
 
 import AvatarUpload from "./AvatarUpload";

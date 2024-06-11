@@ -1,19 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
-// import { useParams } from "next/navigation";
-import { fetchAPI } from "@/services/api";
-import { UserResponseData } from "~shared/types";
 
-// export async function generateStaticParams() {
-// 	const usersData:UserResponseData[] = await fetchAPI('/user/');
-//     console.log('posts', usersData); //TESTING
-// 	return usersData.map((user) => ({
-// 		username: user.username,
-// 	}));
-// }
 
 const ProfileDetails = ({params} : {params: {username: string}}) => {
 // const ProfileDetails = () => {

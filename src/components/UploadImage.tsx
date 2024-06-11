@@ -1,6 +1,5 @@
 'use client'
 
-import { uploadPicture } from '@/services/api'
 import { useState, useEffect } from 'react'
 
 interface UploadImageProps {

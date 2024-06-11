@@ -2,8 +2,7 @@
 import styles from "./page.module.css";
 import Image from "next/image";
 import { useEffect, useState } from 'react';
-import { fetchAPI, getPictureWithKey } from "@/services/api";
-import { GetAllPostResponseData } from "~shared/types";
+import { fetchAPI, getPictureWithKey } from "../../../../../../services/api";
 
 
 export type PostParams = {

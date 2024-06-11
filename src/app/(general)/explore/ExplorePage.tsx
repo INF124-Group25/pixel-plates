@@ -1,12 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import Head from 'next/head';
 import styles from "./page.module.css";
-import { useState, useEffect } from 'react';
-import { getUserPicture, getPostPicture, fetchAPI, getPictureWithKey } from "@/services/api";
-import { TBusiness, TPostResponseData } from "~shared/types";
+import { useState } from 'react';
+import { getUserPicture, fetchAPI, getPictureWithKey } from "../../../services/api";
+import { TBusiness, TPostResponseData } from "../../../../shared/types";
 import { useRouter } from "next/navigation";
 
 type TBusinessWithImage = TBusiness & { imageUrl: string, postId:string };

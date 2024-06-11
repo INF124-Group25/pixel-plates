@@ -5,9 +5,9 @@ import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
 import { useContext, useEffect, useState } from 'react';
-import { Context } from '@/components/UserContext';
+import { Context } from '../../../components/UserContext';
 import { TrophySpin } from "react-loading-indicators";
-import { getPictureWithKey } from "@/services/api";
+import { getPictureWithKey } from "../../../services/api";
 
 const ProfileNav = () => {
     const [name, setName] = useState('JonnieEats');

@@ -1,5 +1,4 @@
 import style from "./page.module.css";
-import Image from "next/image";
 
 const PostCard: React.FC<{ 
     // imageSrc: string; 
