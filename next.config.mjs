@@ -1,8 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     // output: 'export',
-    poweredByHeader: false,
-    distDir: "dist/next",
+    // poweredByHeader: false,
+    // distDir: "dist/next",
     images: {
         loader: "custom",
         loaderFile: "./src/services/loader.js",
