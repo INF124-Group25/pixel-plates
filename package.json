@@ -10,7 +10,7 @@
     "next-build": "next build",
     "lint": "next lint",
     "launch": "concurrently \"cd backend && npm run dev\" \"npm run dev\"",
-    "build": "npm i && cd backend && npm i && tsc && cd .. && next build",
+    "build": "npm i; cd backend && npm i; tsc; cd .. && next build",
     "start": "node backend/server.js"
   },
   "dependencies": {
