@@ -43,11 +43,15 @@ const RegisterForm = () => {
                         password: password,
                     }),
                 });
-                console.log('response:',response)
-                localStorage.setItem('token', response.token);
-                console.log("Register submitted", { username, email, password });
-                notifyUserRegisterSuccess();
-                router.push('/profile');
+                // console.log('response:',response)
+                if (typeof window !== 'undefined'){
+                    localStorage.setItem('token', response.token);
+                    // console.log("Register submitted", { username, email, password });
+                    notifyUserRegisterSuccess();
+                    router.push('/profile');
+                }else{
+                    console.log('Window is undefined');
+                }
             } catch (error) {
                 notifyUserRegisterFailure();
                 console.error("Error when registering in:", error);

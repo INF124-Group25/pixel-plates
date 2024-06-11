@@ -3,12 +3,24 @@
 import { useEffect } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
+// import { useParams } from "next/navigation";
+import { fetchAPI } from "@/services/api";
+import { UserResponseData } from "~shared/types";
 
+// export async function generateStaticParams() {
+// 	const usersData:UserResponseData[] = await fetchAPI('/user/');
+//     console.log('posts', usersData); //TESTING
+// 	return usersData.map((user) => ({
+// 		username: user.username,
+// 	}));
+// }
 
 const ProfileDetails = ({params} : {params: {username: string}}) => {
-    const name = params.username;
-    const postName = "Cha For Tea - University Town Center";
+// const ProfileDetails = () => {
+    // const { username } = useParams<{ username: string }>()
     const username = params.username;
+    const name = username;
+    const postName = "Cha For Tea - University Town Center";
     const postImage = "/popcorn-chicken.png";
 
 
@@ -30,7 +42,7 @@ const ProfileDetails = ({params} : {params: {username: string}}) => {
                     {postImages.map((image, index) => (
                         <Link
                             key={index}
-                            href={`/user/${params.username}/post/OxLseuNd`}
+                            href={`/user/${username}/post/OxLseuNd`}
                             className={styles.profilePostCards}
                             style={{
                                 backgroundImage: `url(${image.imageSrc})`,

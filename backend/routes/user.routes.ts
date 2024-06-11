@@ -1,7 +1,7 @@
 import express from "express";
-import { getMyUser, getProfilePhoto, updateUser } from "controllers/users.controller";
-import authMiddleware from "middleware/authMiddleware";
-import { pictureResults, upload } from "bucket/s3";
+import { getMyUser, getProfilePhoto, updateUser, getUsers } from "../controllers/users.controller";
+import authMiddleware from "../middleware/authMiddleware";
+import { pictureResults, upload } from "../bucket/s3";
 
 
 const router = express.Router();
@@ -10,10 +10,11 @@ const router = express.Router();
 //     .get(authMiddleware, getMyUser)
 //     ;
 
+
 // router.post('/image', authMiddleware, upload.single('profile_picture'), pictureResults);
 router.post('/image/:id', upload.single('profile_picture'), pictureResults);
 router.get('/image/:id', getProfilePhoto);
-
+router.get('/', getUsers);
 
 router.route('/profile')
     .get(authMiddleware, getMyUser)

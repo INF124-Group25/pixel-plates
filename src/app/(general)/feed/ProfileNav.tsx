@@ -27,6 +27,9 @@ const ProfileNav = () => {
         if(user) {
             setName(user.username);
             setDescription(user.bio || '');
+            // if(user.profile_image_URL){
+            //     console.log('profile layout pic' + getPictureWithKey(user.profile_image_URL));
+            // }
             setImageSrc(user.profile_image_URL ? getPictureWithKey(user.profile_image_URL) : defaultImage);
         }else{
             redirectToLogin();

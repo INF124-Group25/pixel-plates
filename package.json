@@ -10,9 +10,7 @@
     "launch": "concurrently \"cd backend && npm run dev\" \"npm run dev\""
   },
   "dependencies": {
-    "@auth/express": "^0.5.5",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.30.10",
     "express": "^4.19.2",
     "next": "14.2.3",
     "postgres": "^3.4.4",

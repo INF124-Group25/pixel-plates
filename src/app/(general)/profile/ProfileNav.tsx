@@ -34,6 +34,7 @@ const ProfileNav = () => {
             if(user) {
                 setName(user.username);
                 setDescription(user.bio || '');
+                console.log('profile layout pic: ' + getPictureWithKey(user.profile_image_URL!));//TESTING
                 setImage(user.profile_image_URL ? getPictureWithKey(user.profile_image_URL) : defaultImage);
             }else{
                 redirectToLogin();

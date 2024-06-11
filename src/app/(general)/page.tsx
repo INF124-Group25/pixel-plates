@@ -3,6 +3,7 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import { useEffect, useState } from "react";
+import { fetchAPI } from "@/services/api";
 
 export default function Home() {
     const [username, setUsername] = useState("no name yet");
@@ -16,10 +17,8 @@ export default function Home() {
 
                     }
                 }
-                const response = await fetch('http://localhost:5001/api/test/user');
-                console.log(response);//TESTING
-                const json = await response.json();
-                console.log(json);//TESTING
+                const json = await fetchAPI('/test/user');
+                // console.log(json);//TESTING
                 const username = json[0].username;
                 setUsername(username);
             } catch (error) {

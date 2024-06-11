@@ -5,6 +5,8 @@ import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import publicLoader from "@/services/publicLoader";
+import { fetchAPI } from "@/services/api";
 
 
 const ProfileNav = () => {
@@ -25,16 +27,8 @@ const ProfileNav = () => {
     useEffect(()=>{
         const fetchUser = async() => {
             try {
-                const options = {
-                    headers: {
-
-                    }
-                }
-
-                const response = await fetch('http://localhost:5001/api/test/user');
-                console.log(response);//TESTING
-                const json = await response.json();
-                console.log(json);//TESTING
+                const json = await fetchAPI('/test/user');
+                // console.log(json);//TESTING
 
                 const user = json.find((user: { username: string; }) => user.username === targetUsername);
 
@@ -64,6 +58,7 @@ const ProfileNav = () => {
                         alt="default user"
                         width={125}
                         height={125}
+                        loader={publicLoader}
                     />
                     {pathname === `/user/${username}` && (
                         <>

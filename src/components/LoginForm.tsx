@@ -8,6 +8,7 @@ import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchAPI } from "@/services/api";
 import { LoginResponseBody } from "~shared/types";
+import publicLoader  from "@/services/publicLoader";
 
 
 const LoginForm = ()=> {
@@ -38,13 +39,17 @@ const LoginForm = ()=> {
                         password: password,
                     }),
                 });
-                localStorage.setItem('token', data.token);
-                console.log("Login submitted", { username, password });
-                notifyUserloginSuccess();
-                router.push('/profile');
-                setTimeout(() => {
+                if (typeof window !== 'undefined'){
+                    localStorage.setItem('token', data.token);
+                    // console.log("Login submitted", { username, password });
+                    notifyUserloginSuccess();
                     router.push('/profile');
-                }, 500);
+                    setTimeout(() => {
+                        router.push('/profile');
+                    }, 500);
+                }else{
+                    console.log('Window is undefined');
+                }
             } catch (error) {
                 notifyUserloginFailure();
                 console.error("Error when logging in:", error);
@@ -98,6 +103,7 @@ const LoginForm = ()=> {
                     className={s.loginLogo}
                     width={100}
                     height={100}
+                    loader={publicLoader}
                 />
                 <p>
                     Pixel <br /> Plates

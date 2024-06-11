@@ -1,13 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import s from "@/app/(general)/profile/edit/page.module.css";
-import { fetchAPI, fetchUserProfile, updateUserProfile, uploadPicture } from "@/services/api";
-import { use, useContext, useEffect, useRef, useState } from "react";
+import { updateUserProfile, uploadPicture } from "@/services/api";
+import { use, useContext, useEffect, useState } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { LoginResponseBody, UpdateUserRequestBody } from "~shared/types";
+import { UpdateUserRequestBody } from "~shared/types";
 import { Context } from "./UserContext";
-import Image from "next/image";
 
 import AvatarUpload from "./AvatarUpload";
 
@@ -20,7 +19,8 @@ const EditProfile = () => {
         user,
         loading,
         login, 
-        logout
+        logout,
+        updateUser
     } = userContext;
 
     const [id, setId] = useState("");
@@ -38,8 +38,8 @@ const EditProfile = () => {
             console.error('No User');
             return;
         }
-        console.log('uploadprofilepicture:', avatarOutputFile);//TESTING
-        console.log('id:', id);//TESTING
+        // console.log('uploadprofilepicture:', avatarOutputFile);//TESTING
+        // console.log('id:', id);//TESTING
         const json = await uploadPicture(avatarOutputFile, false, id);
         return json;
     };
@@ -76,8 +76,8 @@ const EditProfile = () => {
             try {
                 const photoJson = await uploadProfilePicture();
                 key = photoJson.key;
-                console.log("response:", photoJson);
-                console.log('key:', key);
+                // console.log("response:", photoJson);
+                // console.log('key:', key);
             } catch (error) {
                 console.error(`Was not able to upload image: ${error}`);
             }
@@ -90,16 +90,11 @@ const EditProfile = () => {
                     profile_image_URL: key || `profile_picture/default-user.png`,
                 };
                 const newUserResponse = await updateUserProfile(newUser);
-                console.log("newUserResponse:", newUserResponse);
+                // console.log("newUserResponse:", newUserResponse);
                 // restart context
-                logout();
-                login();
-                // setUsername(newUserResponse.username);
-                // setEmail(newUserResponse.email);
-                // setBio(newUserResponse.bio || "");
-                // setAvatar(newUserResponse.profile_image_URL || "");
-                // localStorage.setItem("user", JSON.stringify(newUserResponse)); //TESTING
-                // setUser(newUserResponse);
+                // logout();
+                // login();
+                updateUser();
                 notifySuccessProfileEdit();
             } catch (error) {
                 console.error("Failed updating profile:", error);

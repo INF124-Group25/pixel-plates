@@ -1,12 +1,22 @@
-import { db } from "db/db";
-import { user, NewUser, User } from "db/schema";
+import { db } from "../db/db";
+import { user, NewUser, User } from "../db/schema";
 import { eq } from "drizzle-orm";
-import asyncMiddleware from "middleware/asyncMiddleware";
-import { hashPassword, comparePassword } from "utils/passwordManager";
-import { generate, verify } from "utils/jwtManager";
-import { LoginRequestBody, LoginResponseBody, MyUserRequestBody, RegisterRequestBody, UpdateUserRequestBody} from '~shared/types';
-import { getUserWithId, getUserWithToken, updateUserWithUser } from "services/user.service";
-import { getPhoto } from "bucket/s3";
+import asyncMiddleware from "../middleware/asyncMiddleware";
+import { hashPassword, comparePassword } from "../utils/passwordManager";
+import { generate, verify } from "../utils/jwtManager";
+import {
+    LoginRequestBody,
+    LoginResponseBody,
+    MyUserRequestBody,
+    RegisterRequestBody,
+    UpdateUserRequestBody,
+} from "~shared/types";
+import {
+    getUserWithId,
+    getUserWithToken,
+    updateUserWithUser,
+} from "../services/user.service";
+import { getPhoto } from "../bucket/s3";
 
 const registerUser = asyncMiddleware(async (req, res, next) => {
     const { username, password, email } = req.body as RegisterRequestBody;
@@ -19,7 +29,7 @@ const registerUser = asyncMiddleware(async (req, res, next) => {
         .select()
         .from(user)
         .where(eq(user.email, email));
-        console.log(user_exists.length);//TESTING
+    // console.log(user_exists.length); //TESTING
     if (user_exists.length > 0) throw new Error("User already exists");
     //encrypt password
     const hashedPassword = await hashPassword(password);
@@ -67,12 +77,11 @@ const loginUser = asyncMiddleware(async (req, res, next) => {
     }
 });
 
-
 const getUserInfo = asyncMiddleware(async (req, res, next) => {
     const userReq = req.user;
-    if(!userReq){
+    if (!userReq) {
         res.status(401);
-        throw new Error('No request.user field');
+        throw new Error("No request.user field");
     }
     const id = req.params.id;
     if (userReq.id.toString() !== id) {
@@ -93,43 +102,67 @@ const getUserInfo = asyncMiddleware(async (req, res, next) => {
     res.status(200).send(userInfo);
 });
 
-const getMyUser = asyncMiddleware(async(req, res, next) => {
+const getMyUser = asyncMiddleware(async (req, res, next) => {
     res.status(200).send(req.user);
 });
 
-const updateUser = asyncMiddleware(async(req, res, next) => {
+const updateUser = asyncMiddleware(async (req, res, next) => {
     const userReq = req.user;
-    if(!userReq || !req.user){
+    if (!userReq || !req.user) {
         res.status(401);
-        throw new Error('No request.user field');
+        throw new Error("No request.user field");
     }
     const userRecord = await getUserWithId(req.user.id);
     const updateUser = req.body as UpdateUserRequestBody;
     const passwordInEditRequest = updateUser.password.length > 0;
-    let userPut:NewUser;
+    let userPut: NewUser;
     userPut = {
         username: updateUser.username || userRecord.username,
-        password: '',
-        email:updateUser.username || userRecord.email,
-        bio:updateUser.bio || userRecord.bio,
-        profile_image_URL: updateUser.profile_image_URL || userRecord.profile_image_URL,
-    }
-    if(passwordInEditRequest){
+        password: "",
+        email: updateUser.username || userRecord.email,
+        bio: updateUser.bio || userRecord.bio,
+        profile_image_URL:
+            updateUser.profile_image_URL || userRecord.profile_image_URL,
+    };
+    if (passwordInEditRequest) {
         updateUser.password = await hashPassword(updateUser.password);
         userPut.password = updateUser.password;
     }
-    const changedUser = await updateUserWithUser(userPut, passwordInEditRequest, userRecord.id);
+    const changedUser = await updateUserWithUser(
+        userPut,
+        passwordInEditRequest,
+        userRecord.id
+    );
     res.status(200).send(changedUser);
 });
 
-
-const getProfilePhoto = asyncMiddleware(async(req, res, next) => {
-    const {Body, ContentType, Key} = await getPhoto(req.params.id);
-    res.setHeader('Content-Disposition', `attachment; filename="${Key}"`);
-    res.setHeader('Content-Type', ContentType);
+const getProfilePhoto = asyncMiddleware(async (req, res, next) => {
+    const { Body, ContentType, Key } = await getPhoto(req.params.id);
+    res.setHeader("Content-Disposition", `attachment; filename="${Key}"`);
+    res.setHeader("Content-Type", ContentType);
     res.send(Body);
 });
 
+const getUsers = asyncMiddleware(async (req, res, next) => {
+    const users = await db
+        .select({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            bio: user.bio,
+            profile_image_URL: user.profile_image_URL,
+            created_at: user.created_at,
+        })
+        .from(user);
+    res.status(200).send(users);
+});
 
-
-export { registerUser, loginUser, getUserInfo, getMyUser, updateUser, getProfilePhoto };
+export {
+    registerUser,
+    loginUser,
+    getUserInfo,
+    getMyUser,
+    updateUser,
+    getProfilePhoto,
+    getUsers,
+};

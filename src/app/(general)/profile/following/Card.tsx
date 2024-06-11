@@ -12,12 +12,13 @@ const FollowerCard: React.FC<{ src: string; name: string; bio: string }> = ({
     name,
     bio,
 }) => {
+    // console.log("src: ", src);//TESTING
     return (
         <div className={style.followerCard}>
             <div>
                 <Link href={`/user/${name}`} >
                     {/* <a> */}
-                    <Image src={src} alt={name} width={100} height={100} ></Image>
+                    <Image src={'/'+src} alt={name} width={100} height={100} ></Image>
                     {/* </a> */}
                 </Link>
                 <p>{name}</p>

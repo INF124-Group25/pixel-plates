@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getPictureWithKey, getPostPicture, getUserPicture } from '@/services/api';
+import { fetchAPI, getPictureWithKey, getPostPicture, getUserPicture } from '@/services/api';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -29,10 +29,8 @@ const PostsList = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const postResponse = await fetch('http://localhost:5001/api/test/user/erick/post'); // REPLACE WITH CURRENT USER
-                const postData: PostRequest = await postResponse.json();
-
-                console.log("postData: ", postData)
+                const postData: PostRequest = await fetchAPI('/test/user/erick/post'); // REPLACE WITH CURRENT USER
+                // console.log("postData: ", postData)
 
                 const postsWithImages = await Promise.all(postData[0].map(async (post: Post) => {
                     const image = getPostPicture(post.id);

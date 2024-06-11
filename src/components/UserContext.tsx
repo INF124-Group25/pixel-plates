@@ -9,8 +9,11 @@ export type UserContextType = {
     login: () => Promise<void>, 
     logout: () => void,
     redirectToLogin: () => void,
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+    updateUser: () => Promise<void>,
 };
+
+
 
 export const Context = createContext<UserContextType | null>(null);
 
@@ -20,28 +23,57 @@ const UserContext = ({ children }: { children: React.ReactNode }) => {
     const router = useRouter();
     const redirectToLogin = () => router.push('/login');
 
-    const login = async () => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-            setLoading(false);
-            return;
+    const updateUser = async () => {
+        if(typeof window !== 'undefined'){
+            setLoading(true);
+            try {
+                const userData = await fetchUserProfile();
+                // console.log('userData:', userData); // TESTING
+                setUser(userData);
+
+            } catch (error) {
+                localStorage.removeItem("token");
+                // router.push("/login");
+                console.error("Token is invalid!:", error);
+            }finally{
+                setLoading(false);
+            }
+        }else{
+            console.error('Window is undefined');
         }
-        try {
-            const userData = await fetchUserProfile();
-            console.log('userData:', userData); // TESTING
-            setUser(userData);
-        } catch (error) {
-            localStorage.removeItem("token");
-            // router.push("/login");
-            console.error("Token is invalid!:", error);
-        } finally {
-            setLoading(false);
+    };
+
+    const login = async () => {
+        if(typeof window !== 'undefined'){
+            const token = window.localStorage.getItem("token");
+            if (!token) {
+                setLoading(false);
+                return;
+            }
+            try {
+                const userData = await fetchUserProfile();
+                // console.log('userData:', userData); // TESTING
+                setUser(userData);
+            } catch (error) {
+                localStorage.removeItem("token");
+                // router.push("/login");
+                console.error("Token is invalid!:", error);
+            } finally {
+                setLoading(false);
+            }
+        }else{
+            console.log('Window is undefined');
         }
     };
     const logout = () => {
-        localStorage.removeItem("token");
-        setUser(null);
-        setLoading(false);
+        if(typeof window !== 'undefined'){
+            localStorage.removeItem("token");
+            setUser(null);
+            setLoading(false);
+        }else{
+            console.log('Window is undefined');
+        }
+
     };
 
     useEffect(() => {
@@ -56,7 +88,8 @@ const UserContext = ({ children }: { children: React.ReactNode }) => {
                 login, 
                 logout,
                 redirectToLogin,
-                setLoading
+                setLoading,
+                updateUser
             }}
         >
             {children}

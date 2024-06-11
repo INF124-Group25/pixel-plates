@@ -1,11 +1,10 @@
 import express from "express";
-import { db } from "db/db";
+import { db } from "../db/db";
 import { eq } from 'drizzle-orm';
-import { user, post, userFollowing, business } from "db/schema";
+import { user, post, userFollowing, business } from "../db/schema";
 
-import authMiddleware from "middleware/authMiddleware";
-import { pictureResults, upload } from "bucket/s3";
-import { getPhotoPost } from "controllers/post.controller";
+import { pictureResults, upload } from "../bucket/s3";
+import { getPhotoPost, getAllPosts } from "../controllers/post.controller";
 
 
 const router = express.Router();
@@ -13,6 +12,9 @@ const router = express.Router();
 
 router.post('/image/:id', upload.single('post_picture'), pictureResults);
 router.get('/image/:id', getPhotoPost);
+
+
+router.get('/', getAllPosts);
 
 // get posts
 router.get('/:postId', async (req, res) => {

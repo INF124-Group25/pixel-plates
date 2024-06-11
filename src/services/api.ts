@@ -1,3 +1,4 @@
+'use client';
 import { writeFile } from 'fs/promises'
 import { NextRequest, NextResponse } from 'next/server'
 import { LoginResponseBody, RequestUserProfile, UpdateUserRequestBody } from "~shared/types";
@@ -5,7 +6,7 @@ import { LoginResponseBody, RequestUserProfile, UpdateUserRequestBody } from "~s
 const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`;
 const userHeader = {
     "Content-Type": "application/json",
-    "Authorization": 'Bearer ' + localStorage.getItem("token")
+    "Authorization": 'Bearer ' + window.localStorage.getItem("token")
 };
 export const fetchAPI = async (url: string, options = {}) => {
     const response = await fetch(`${baseUrl}${url}`, options);
@@ -18,7 +19,7 @@ export const fetchAPI = async (url: string, options = {}) => {
 export const fetchUserProfile = async() => {
     try {
         const data: RequestUserProfile = await fetchAPI('/user/profile', { headers: userHeader });
-        console.log('data:', data); // TESTING
+        // console.log('data:', data); // TESTING
         return data;
     } catch (error) {
         throw error;
@@ -32,7 +33,7 @@ export const updateUserProfile = async(newUserRequest:UpdateUserRequestBody) => 
             headers: userHeader,
             body: JSON.stringify(newUserRequest),
         });
-        console.log('data:', data); // TESTING
+        // console.log('data:', data); // TESTING
         return data;
     } catch (error) {
         throw error;
@@ -58,9 +59,12 @@ export const updateUserProfile = async(newUserRequest:UpdateUserRequestBody) => 
 //     }
 // };
 
-export const getUserPicture = (id:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/profile_picture/' + id;
-export const getPostPicture = (id:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/post_picture/' + id;
-export const getPictureWithKey = (key:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/' + key;
+// export const getUserPicture = (id:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/profile_picture/' + id;
+// export const getPostPicture = (id:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/post_picture/' + id;
+// export const getPictureWithKey = (key:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/' + key;
+export const getUserPicture = (id:string) => '/profile_picture/' + id;
+export const getPostPicture = (id:string) => '/post_picture/' + id;
+export const getPictureWithKey = (key:string) => '/' + key;
 
 /**
  * Uploads a picture, which can be either a profile picture or a post picture.
@@ -93,5 +97,7 @@ export const uploadPicture = async(imageOutputFile:File | null, isPost:boolean, 
         // headers: userHeader,
         body: formData
     });
+    console.log('formdata:', formData);
+    console.log('url:', url);
     return response;
 };

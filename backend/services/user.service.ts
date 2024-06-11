@@ -1,7 +1,7 @@
-import { NewUser, User, user } from "db/schema";
-import { VerifiedUser } from "types/types";
+import { NewUser, User, user } from "../db/schema";
+import { VerifiedUser } from "../types/types";
 import { eq } from "drizzle-orm";
-import { db } from "db/db";
+import { db } from "../db/db";
 
 const getUserWithToken = async(decodedId:string) => {
     const verifyUser:VerifiedUser[] = await db

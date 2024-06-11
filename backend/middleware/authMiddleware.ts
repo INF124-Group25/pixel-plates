@@ -1,27 +1,20 @@
 import asyncMiddleware from "./asyncMiddleware";
 import { generate, verify } from "../utils/jwtManager";
-import { user, User, NewUser } from "db/schema";
-import { db } from "db/db";
+import { user, User, NewUser } from "../db/schema";
+import { db } from "../db/db";
 import { eq } from "drizzle-orm";
 import { VerifiedUser } from '../types/types';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const authMiddleware = asyncMiddleware(async (req, res, next) => {
     const { authorization } = req.headers;
-    console.log('authorization:', authorization)//TESTING
+    // console.log('authorization:', authorization)//TESTING
     if (authorization && authorization.startsWith('Bearer ')) {
         const token = authorization.split(' ')[1];
-        console.log("token:", token);//TESTING
+        // console.log("token:", token);//TESTING
         try {
             const decoded = verify(token);
-            console.log('decoded:', decoded); //TESTING
-            /* ex output of decoded
-                decoded: {
-                    id: '5ba0498f-4b33-4f8a-8ef5-ab92266e1826',
-                    iat: 1717198658,
-                    exp: 1717205858
-                }
-             */
+            // console.log('decoded:', decoded); //TESTING
             const verifyUser:VerifiedUser[] = await db
             .select({
                 id: user.id,

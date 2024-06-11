@@ -1,12 +1,12 @@
 import express from "express";
-import { db } from "db/db";
-import { user, post, userFollowing, business } from "db/schema";
+import { db } from "../db/db";
+import { user, post, userFollowing, business } from "../db/schema";
 import { eq } from 'drizzle-orm';
-import authMiddleware from "middleware/authMiddleware";
-import asyncMiddleware from "middleware/asyncMiddleware";
+import authMiddleware from "../middleware/authMiddleware";
+import asyncMiddleware from "../middleware/asyncMiddleware";
 import { like } from "drizzle-orm";
 import { v4 as uuidv4 } from 'uuid';
-import { test, upload, pictureResults } from "bucket/s3";
+import { test, upload, pictureResults } from "../bucket/s3";
 
 
 const router = express.Router();
@@ -41,7 +41,7 @@ router.get("/user", async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
     try {
         const userIdParam = req.params.userId;
-        const result = await db.select({ username: user.username, bio: user.bio }).from(user).where(eq(user.id, userIdParam));
+        const result = await db.select({ username: user.username, bio: user.bio, profile_image_URL: user.profile_image_URL }).from(user).where(eq(user.id, userIdParam));
         res.send(result);
         // console.log(result);
     } catch (error) {

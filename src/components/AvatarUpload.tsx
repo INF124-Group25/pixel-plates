@@ -119,7 +119,7 @@ const AvatarUpload = ({
                 "avatar.jpeg"
             );
             setCroppedOutputUrl(croppedImageUrl);
-            console.log('croppedImageUrl:', croppedImageUrl);//TESTING
+            // console.log('croppedImageUrl:', croppedImageUrl);//TESTING
         }
     };
 

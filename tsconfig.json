@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,14 +22,36 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"], 
-      "~shared/*": ["./shared/*"]
+      "@/*": [
+        "./src/*"
+      ],
+      "$/*": [
+        "./"
+      ],
+      "~shared/*": [
+        "./shared/*"
+      ]
     },
     "rootDirs": [
       "./src",
-      "./shared"
-    ]
+      "./shared",
+      "./backend"
+    ],
+    "declaration": true,
+    "outDir": "./dist",
+    "baseUrl": "./"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(general)/user/[profile]/[postId]"],
-  "exclude": ["node_modules", "backend"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/app/(general)/user/[profile]/[postId]",
+    "dist/types/**/*.ts",
+    "dist/next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "backend"
+  ]
 }
