@@ -1,10 +1,11 @@
-- Deployed Website: https://pixel-plates.netlify.app/
+- Deployed Website: https://www.pixelplates.xyz/
 - Video Demo Link: https://youtu.be/STdrEkHwlXs?si=M3ojsz00MUlBuk48
 
 - After cloning the repository add one .env files to the root directory and one to the backend directory (env. parameters shown below). 
-- Run the "./npm_install.sh" in the terminal to npm install for both directories
-- Run "npm run launch" in the terminal
-- Open the webapp with the displayed link in the terminal (e.g. http://localhost:3000)
+- Run the `./npm_install.sh` in the terminal to npm install for both directories
+- Run `npm run next-build` in the root directory terminal
+- Then, run `npm run tsx-start` in the root directory terminal 
+- Open the webapp with the displayed link in the terminal (e.g. http://localhost:<PORT | 5001>)
 
 These are the parameters for the backend .env
 ```
