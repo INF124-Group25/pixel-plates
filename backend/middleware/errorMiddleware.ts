@@ -1,6 +1,6 @@
 import { ErrorAsyncFunction } from "../types/types";
-
-const errorMiddleware: ErrorAsyncFunction = (err, req, res, next) => {
+import { Request, Response, NextFunction } from "express";
+const errorMiddleware: ErrorAsyncFunction = (err:Error, req:Request, res:Response, next:NextFunction) => {
     const errorObject = {
         message: err.message,
         stack:

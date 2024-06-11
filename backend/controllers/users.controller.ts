@@ -10,15 +10,16 @@ import {
     MyUserRequestBody,
     RegisterRequestBody,
     UpdateUserRequestBody,
-} from "~shared/types";
+} from "~shared/types.js";
 import {
     getUserWithId,
     getUserWithToken,
     updateUserWithUser,
-} from "../services/user.service";
-import { getPhoto } from "../bucket/s3";
+} from "../services/user.service.js";
+import { getPhoto } from "../bucket/s3.js";
+import { Request, Response, NextFunction } from "express";
 
-const registerUser = asyncMiddleware(async (req, res, next) => {
+const registerUser = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     const { username, password, email } = req.body as RegisterRequestBody;
     if (!username || !password || !email) {
         throw new Error("All fields are required");
@@ -52,7 +53,7 @@ const registerUser = asyncMiddleware(async (req, res, next) => {
     });
 });
 
-const loginUser = asyncMiddleware(async (req, res, next) => {
+const loginUser = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     const { username, password } = req.body as LoginRequestBody; // might change username to email ORRRR do username || email
     // validate user
     const existing_user = await db
@@ -77,7 +78,7 @@ const loginUser = asyncMiddleware(async (req, res, next) => {
     }
 });
 
-const getUserInfo = asyncMiddleware(async (req, res, next) => {
+const getUserInfo = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     const userReq = req.user;
     if (!userReq) {
         res.status(401);
@@ -102,11 +103,11 @@ const getUserInfo = asyncMiddleware(async (req, res, next) => {
     res.status(200).send(userInfo);
 });
 
-const getMyUser = asyncMiddleware(async (req, res, next) => {
+const getMyUser = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     res.status(200).send(req.user);
 });
 
-const updateUser = asyncMiddleware(async (req, res, next) => {
+const updateUser = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     const userReq = req.user;
     if (!userReq || !req.user) {
         res.status(401);
@@ -136,14 +137,14 @@ const updateUser = asyncMiddleware(async (req, res, next) => {
     res.status(200).send(changedUser);
 });
 
-const getProfilePhoto = asyncMiddleware(async (req, res, next) => {
+const getProfilePhoto = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     const { Body, ContentType, Key } = await getPhoto(req.params.id);
     res.setHeader("Content-Disposition", `attachment; filename="${Key}"`);
     res.setHeader("Content-Type", ContentType);
     res.send(Body);
 });
 
-const getUsers = asyncMiddleware(async (req, res, next) => {
+const getUsers = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     const users = await db
         .select({
             id: user.id,

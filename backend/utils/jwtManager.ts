@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { JwtPayload } from '../types/types';
+import { JwtPayload } from '../types/types.js';
 
 const generate = (id:string) => jwt.sign({id}, process.env.JWT_SECRET!, {expiresIn: '2h'});
 
