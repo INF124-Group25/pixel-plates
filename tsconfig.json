@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     // "target": "ES2020",
+    "baseUrl": ".",
     "lib": [
       "dom",
       "dom.iterable",
@@ -23,21 +24,12 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "~shared/*": [
-        "./shared/*"
-      ]
+      "@/*": ["src/*"],
+      "~shared/*": ["./shared/*"]
     },
-    "rootDirs": [
-      "./src",
-      "./shared",
-      // "./backend"
-    ],
+    "rootDirs": ["./src", "./shared",],
     // "declaration": true,
     // "outDir": "./dist",
-    "baseUrl": "./"
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(general)/user/[profile]/[postId]"],
   "exclude": ["node_modules", "backend"]

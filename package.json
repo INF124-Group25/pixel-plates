@@ -9,7 +9,7 @@
     "lint": "next lint",
     "launch": "concurrently \"cd backend && npm run dev\" \"npm run dev\"",
     "tsx-build": "npm i; cd backend; npm i; cd ..; next build",
-    "tsx-start": "tsx backend/server.ts",
+    "tsx-start": "cd backend && npm run dev",
     "start": "node backend/server.ts"
   },
   "dependencies": {
