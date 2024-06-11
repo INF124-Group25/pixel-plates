@@ -49,7 +49,8 @@
     ".next/types/**/*.ts",
     "src/app/(general)/user/[profile]/[postId]",
     "dist/types/**/*.ts",
-    "dist/next/types/**/*.ts"
+    "dist/next/types/**/*.ts",
+    "./shared/express/index.d.ts"
   ],
   "exclude": [
     "node_modules"

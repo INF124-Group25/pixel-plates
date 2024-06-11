@@ -10,8 +10,8 @@
     "next-build": "next build",
     "lint": "next lint",
     "launch": "concurrently \"cd backend && npm run dev\" \"npm run dev\"",
-    "build": "npm i; cd backend && npm i; tsc; cd .. && next build",
-    "start": "node backend/server.js"
+    "build": "npm i; cd backend && npm i; npm install --save-dev typescript @types/react @types/node; tsc; cd .. && next build",
+    "start": "node backend/server.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
