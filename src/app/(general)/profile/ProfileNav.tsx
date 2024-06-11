@@ -42,6 +42,7 @@ const ProfileNav = () => {
             }
         };
         fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[user]);
 
     if(loading){
