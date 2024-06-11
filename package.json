@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "npm i && cd backend && npm i && tsc && cd .. && next build",
+    "start": "node backend/server.js",
+    "next-start": "next start",
     "lint": "next lint",
     "launch": "concurrently \"cd backend && npm run dev\" \"npm run dev\""
   },
