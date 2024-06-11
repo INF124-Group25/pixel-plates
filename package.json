@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "old-build": "npm i && cd backend && npm i && tsc && cd .. && next build",
-    "build": "npm i && cd backend && npm i && cd .. && next build",
-    "old-start": "node backend/server.js",
-    "start": "npx tsx backend/server.js",
+    "old-build": "npm i && cd backend && npm i && cd .. && next build",
+    "tsx-start": "npx tsx backend/server.js",
     "next-start": "next start",
     "next-build": "next build",
     "lint": "next lint",
-    "launch": "concurrently \"cd backend && npm run dev\" \"npm run dev\""
+    "launch": "concurrently \"cd backend && npm run dev\" \"npm run dev\"",
+    "build": "npm i && cd backend && npm i && tsc && cd .. && next build",
+    "start": "node backend/server.js"
+
   },
   "dependencies": {
     "dotenv": "^16.4.5",
