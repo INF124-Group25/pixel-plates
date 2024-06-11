@@ -27,6 +27,6 @@
       "./shared"
     ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(general)/user/[profile]/[postId]"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(general)/user/[profile]/[postId]", "index.ts"],
   "exclude": ["node_modules", "backend"]
 }

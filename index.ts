@@ -1,6 +1,8 @@
 // file index.ts
 import next from "next";
-import { resolve } from "path";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from 'url';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const dev = process.env.NODE_ENV !== "production";
 let nextDir = __dirname;

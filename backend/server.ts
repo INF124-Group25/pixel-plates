@@ -11,7 +11,7 @@ import {
 import { endClient } from "./db/db";
 import errorMiddleware from "./middleware/errorMiddleware";
 import { closeS3Client } from "./bucket/s3";
-import nextapp from "../index";
+import nextapp from "../index.js";
 
 const startServer = async () => {
     const app = express();
