@@ -1,5 +1,5 @@
-Deployed Website: https://pixel-plates.netlify.app/
-Video Demo Link: https://youtu.be/STdrEkHwlXs?si=M3ojsz00MUlBuk48
+- Deployed Website: https://pixel-plates.netlify.app/
+- Video Demo Link: https://youtu.be/STdrEkHwlXs?si=M3ojsz00MUlBuk48
 
 - After cloning the repository add one .env files to the root directory and one to the backend directory (env. parameters shown below). 
 - Run the "./npm_install.sh" in the terminal to npm install for both directories
