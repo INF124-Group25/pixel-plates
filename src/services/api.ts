@@ -1,10 +1,16 @@
-'use client';
-import { LoginResponseBody, RequestUserProfile, UpdateUserRequestBody } from "../../shared/types";
+"use client";
+import {
+    LoginResponseBody,
+    RequestUserProfile,
+    UpdateUserRequestBody,
+} from "../../shared/types";
 
-const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`;
+const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
+    ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`
+    : "/api";
 const userHeader = {
     "Content-Type": "application/json",
-    "Authorization": 'Bearer ' + window.localStorage.getItem("token")
+    Authorization: "Bearer " + window.localStorage.getItem("token"),
 };
 export const fetchAPI = async (url: string, options = {}) => {
     const response = await fetch(`${baseUrl}${url}`, options);
@@ -14,9 +20,11 @@ export const fetchAPI = async (url: string, options = {}) => {
     return response.json();
 };
 
-export const fetchUserProfile = async() => {
+export const fetchUserProfile = async () => {
     try {
-        const data: RequestUserProfile = await fetchAPI('/user/profile', { headers: userHeader });
+        const data: RequestUserProfile = await fetchAPI("/user/profile", {
+            headers: userHeader,
+        });
         // console.log('data:', data); // TESTING
         return data;
     } catch (error) {
@@ -24,10 +32,12 @@ export const fetchUserProfile = async() => {
     }
 };
 
-export const updateUserProfile = async(newUserRequest:UpdateUserRequestBody) => {
+export const updateUserProfile = async (
+    newUserRequest: UpdateUserRequestBody
+) => {
     try {
         const data: LoginResponseBody = await fetchAPI(`/user/profile`, {
-            method:"PUT",
+            method: "PUT",
             headers: userHeader,
             body: JSON.stringify(newUserRequest),
         });
@@ -60,9 +70,9 @@ export const updateUserProfile = async(newUserRequest:UpdateUserRequestBody) => 
 // export const getUserPicture = (id:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/profile_picture/' + id;
 // export const getPostPicture = (id:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/post_picture/' + id;
 // export const getPictureWithKey = (key:string) => process.env.NEXT_PUBLIC_S3_BUCKET_NAME + '/' + key;
-export const getUserPicture = (id:string) => '/profile_picture/' + id;
-export const getPostPicture = (id:string) => '/post_picture/' + id;
-export const getPictureWithKey = (key:string) => '/' + key;
+export const getUserPicture = (id: string) => "/profile_picture/" + id;
+export const getPostPicture = (id: string) => "/post_picture/" + id;
+export const getPictureWithKey = (key: string) => "/" + key;
 
 /**
  * Uploads a picture, which can be either a profile picture or a post picture.
@@ -72,18 +82,22 @@ export const getPictureWithKey = (key:string) => '/' + key;
  * @param id - If isPost is true, this should be the post id. If isPost is false, this should be the user id.
  * @returns - The function returns a Promise that resolves to the response of the fetch API call.
  */
-export const uploadPicture = async(imageOutputFile:File | null, isPost:boolean, id:string) => {
-    if(imageOutputFile === null){
-        console.error('No Upload Picture');
+export const uploadPicture = async (
+    imageOutputFile: File | null,
+    isPost: boolean,
+    id: string
+) => {
+    if (imageOutputFile === null) {
+        console.error("No Upload Picture");
         return;
     }
     const formData = new FormData();
-    if(!isPost){
-        formData.append('profile_picture', imageOutputFile); 
-        formData.append('user_id', id);
-    }else{
-        formData.append('post_picture', imageOutputFile); 
-        formData.append('post_id', id);
+    if (!isPost) {
+        formData.append("profile_picture", imageOutputFile);
+        formData.append("user_id", id);
+    } else {
+        formData.append("post_picture", imageOutputFile);
+        formData.append("post_id", id);
     }
 
     // const bytes = await imageOutputFile.arrayBuffer()
@@ -91,11 +105,11 @@ export const uploadPicture = async(imageOutputFile:File | null, isPost:boolean, 
 
     const url = isPost ? `/post/image/${id}` : `/user/image/${id}`;
     const response = await fetchAPI(url, {
-        method: 'POST',
+        method: "POST",
         // headers: userHeader,
-        body: formData
+        body: formData,
     });
-    console.log('formdata:', formData);
-    console.log('url:', url);
+    console.log("formdata:", formData);
+    console.log("url:", url);
     return response;
 };
