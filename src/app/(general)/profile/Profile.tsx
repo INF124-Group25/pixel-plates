@@ -3,30 +3,28 @@
 import styles from "./page.module.css";
 import { useContext, useEffect, useState } from "react";
 import PostsList from "../../../components/PostsList";
-import { Context } from '../../../components/UserContext';
+import { useAuth } from '@/components/AuthContext';
 
 const ProfilePage = () => {
     const postName = "Cha For Tea - University Town Center";
-    const postId = "OxLseuNd";
     const postImage = "/popcorn-chicken.png";
 
-    const userContext = useContext(Context);
-    if(!userContext){
-        throw new Error('context should be loaded within a context provider');
-    }
-    const {
-        user,
-    } = userContext;
+    const { loading, isAuthenticated, fetchUserProfile } = useAuth();
 
     
     
     const [name, setName] = useState('');
 
     useEffect(() => {
-        if (user) {
-            setName(user.username);
-        }
-    }, [user]);
+        const fetchUser = async () => {
+            if(loading || !isAuthenticated)return;
+            const user = await fetchUserProfile();
+            if(user){
+                setName(user.username);
+            }
+        };
+        fetchUser();
+    }, [loading, isAuthenticated, fetchUserProfile]);
 
     type posts = {
         name: string;

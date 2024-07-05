@@ -4,10 +4,11 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
-import { useContext, useEffect, useState } from 'react';
-import { Context } from '../../../components/UserContext';
+import { useEffect, useState } from 'react';
+import { useAuth } from "@/components/AuthContext";
 import { TrophySpin } from "react-loading-indicators";
 import { getPictureWithKey } from "../../../services/api";
+import CloudFrontLoader from "@/services/CloudFrontLoader";
 
 const ProfileNav = () => {
     const [name, setName] = useState('JonnieEats');
@@ -17,25 +18,23 @@ const ProfileNav = () => {
     const pathname = usePathname();
     const isViewProfileRouter = pathname === "/profile";
     // const isUserProfilePage ==== maybe use a cookie or something with auth ?
-    const userContext = useContext(Context);
-    if(!userContext){
-        throw new Error('context should be loaded within a context provider');
-    }
-    const { user, loading, redirectToLogin } = userContext;
+    const { isAuthenticated, loading, fetchUserProfile } = useAuth();
     useEffect(()=>{
-        if(loading) return;
-        if(user) {
-            setName(user.username);
-            setDescription(user.bio || '');
-            // if(user.profile_image_URL){
-            //     console.log('profile layout pic' + getPictureWithKey(user.profile_image_URL));
-            // }
-            setImageSrc(user.profile_image_URL ? getPictureWithKey(user.profile_image_URL) : defaultImage);
-        }else{
-            redirectToLogin();
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[user]);
+        const fetchUser = async () => {
+            if(loading || !isAuthenticated)return;
+            const user = await fetchUserProfile();
+            if(user) {
+                setName(user.username);
+                setDescription(user.bio || '');
+                // if(user.profile_image_URL){
+                //     console.log('profile layout pic' + getPictureWithKey(user.profile_image_URL));
+                // }
+                setImageSrc(user.profile_image_URL ? getPictureWithKey(user.profile_image_URL) : defaultImage);
+            }
+        };
+        fetchUser();
+        
+    },[isAuthenticated, fetchUserProfile, loading]);
 
     if(loading){
         return (
@@ -54,6 +53,7 @@ const ProfileNav = () => {
                         alt="default user"
                         width={125}
                         height={125}
+                        loader={CloudFrontLoader}
                     />
                     <h3>{name}</h3>
                     <p>{description}</p>

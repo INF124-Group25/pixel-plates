@@ -7,7 +7,8 @@ import { useState } from "react";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchAPI } from '../services/api'
-import { RegisterResponseBody } from "../../shared/types";
+import { UserDataResponse } from "../../shared/types";
+import CloudFrontLoader from "@/services/CloudFrontLoader";
 
 
 const RegisterForm = () => {
@@ -32,26 +33,15 @@ const RegisterForm = () => {
         }
         const fetchUser = async () => {
             try {
-                const response:RegisterResponseBody = await fetchAPI('/auth/register', {
+                const response: UserDataResponse = await fetchAPI('/auth/register', true, {
                     method: 'POST',
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                        username: username,
-                        email: email,
-                        password: password,
-                    }),
+                    body: JSON.stringify({ username, email, password }),
                 });
-                // console.log('response:',response)
-                if (typeof window !== 'undefined'){
-                    localStorage.setItem('token', response.token);
-                    // console.log("Register submitted", { username, email, password });
-                    notifyUserRegisterSuccess();
-                    router.push('/profile');
-                }else{
-                    console.log('Window is undefined');
-                }
+                notifyUserRegisterSuccess();
+                router.push('/profile');
             } catch (error) {
                 notifyUserRegisterFailure();
                 console.error("Error when registering in:", error);
@@ -121,6 +111,7 @@ const RegisterForm = () => {
                         className={s.loginLogo}
                         width={100}
                         height={100}
+                        loader={CloudFrontLoader}
                     />
                     <p>
                         Pixel <br /> Plates

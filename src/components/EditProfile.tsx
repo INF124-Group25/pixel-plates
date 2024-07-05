@@ -6,22 +6,18 @@ import { use, useContext, useEffect, useState } from "react";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { UpdateUserRequestBody } from "../../shared/types";
-import { Context } from "./UserContext";
+import { useAuth } from "./AuthContext";
+import { useRouter } from 'next/navigation';
 
 import AvatarUpload from "./AvatarUpload";
 
 const EditProfile = () => {
-    const userContext = useContext(Context);
-    if (!userContext) {
-        throw new Error("context should be loaded within a context provider");
-    }
     const {
-        user,
+        isAuthenticated,
         loading,
-        login, 
-        logout,
-        updateUser
-    } = userContext;
+        fetchUserProfile,
+    } = useAuth();
+    const { refresh } = useRouter();
 
     const [id, setId] = useState("");
     const [username, setUsername] = useState("");
@@ -94,8 +90,8 @@ const EditProfile = () => {
                 // restart context
                 // logout();
                 // login();
-                updateUser();
                 notifySuccessProfileEdit();
+                refresh();
             } catch (error) {
                 console.error("Failed updating profile:", error);
                 notifyFailedProfileEdit();
@@ -105,13 +101,18 @@ const EditProfile = () => {
     };
 
     useEffect(() => {
-        if (user){
-            setId(user.id);
-            setUsername(user.username);
-            setEmail(user.email);
-            setBio(user.bio || "");
+        const fetchUser = async () => {
+            if (loading || !isAuthenticated) return;
+            const user = await fetchUserProfile();
+            if (user){
+                setId(user.id);
+                setUsername(user.username);
+                setEmail(user.email);
+                setBio(user.bio || "");
+            };
         };
-    },[user]);
+        fetchUser();
+    },[loading, isAuthenticated, fetchUserProfile]);
 
     return (
         <form className={s.profileEditBoxForm} onSubmit={handleEditProfileForm}>

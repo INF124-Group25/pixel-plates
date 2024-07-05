@@ -3,17 +3,15 @@ import { user, NewUser, User } from "../db/schema";
 import { eq } from "drizzle-orm";
 import asyncMiddleware from "../middleware/asyncMiddleware";
 import { hashPassword, comparePassword } from "../utils/passwordManager";
-import { generate, verify } from "../utils/jwtManager";
+import { generate } from "../utils/jwtManager";
 import {
     LoginRequestBody,
-    LoginResponseBody,
-    MyUserRequestBody,
     RegisterRequestBody,
     UpdateUserRequestBody,
+    UserDataResponse,
 } from "~shared/types.js";
 import {
     getUserWithId,
-    getUserWithToken,
     updateUserWithUser,
 } from "../services/user.service.js";
 import { getPhoto } from "../bucket/s3.js";
@@ -41,16 +39,22 @@ const registerUser = asyncMiddleware(async (req:Request, res:Response, next:Next
         email: email,
     };
     const registeredUser = await db.insert(user).values(newUser).returning();
-    res.status(201).send({
-        // or use json function | TEST IT OUT
+    const responseBody: UserDataResponse = {
         id: registeredUser[0].id,
         username: registeredUser[0].username,
         email: registeredUser[0].email,
         bio: registeredUser[0].bio,
         profile_image_URL: registeredUser[0].profile_image_URL,
         created_at: registeredUser[0].created_at,
-        token: generate(registeredUser[0].id),
-    });
+    };
+    res
+        .status(201)
+        .cookie("jwt", generate(registeredUser[0].id, '1hr'), {
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === 'production' ? true : false,
+            maxAge: 60 * 60 * 1000,
+        })
+        .send(responseBody);
 });
 
 const loginUser = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
@@ -62,20 +66,34 @@ const loginUser = asyncMiddleware(async (req:Request, res:Response, next:NextFun
         .where(eq(user.username, username));
     if (!existing_user) throw new Error("Invalid username");
     if (await comparePassword(password, existing_user[0].password)) {
-        const responseBody: LoginResponseBody = {
+        const responseBody: UserDataResponse = {
             id: existing_user[0].id,
             username: existing_user[0].username,
             email: existing_user[0].email,
             bio: existing_user[0].bio,
             profile_image_URL: existing_user[0].profile_image_URL,
             created_at: existing_user[0].created_at,
-            token: generate(existing_user[0].id),
         };
-        res.status(200).send(responseBody);
+        res
+            .status(200)
+            .cookie("jwt", generate(existing_user[0].id, '1hr'), {
+                httpOnly: true, 
+                secure: process.env.NODE_ENV === 'production' ? true : false,
+                maxAge: 60 * 60 * 1000,
+            })
+            .send(responseBody);
     } else {
         res.status(401);
         throw new Error("Authentication failed");
     }
+});
+
+const logoutUser = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
+    res.clearCookie("jwt", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production' ? true : false,
+    });
+    res.status(200).json({ message: "logged out" });
 });
 
 const getUserInfo = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
@@ -89,7 +107,7 @@ const getUserInfo = asyncMiddleware(async (req:Request, res:Response, next:NextF
         res.status(401);
         throw new Error("Not authorized, invalid user");
     }
-    const userInfo = await db
+    const userInfo:UserDataResponse = (await db
         .select({
             id: user.id,
             username: user.username,
@@ -99,13 +117,14 @@ const getUserInfo = asyncMiddleware(async (req:Request, res:Response, next:NextF
             created_at: user.created_at,
         })
         .from(user)
-        .where(eq(user.id, id));
+        .where(eq(user.id, id)))[0];
     res.status(200).send(userInfo);
 });
 
 const getMyUser = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     res.status(200).send(req.user);
 });
+
 
 const updateUser = asyncMiddleware(async (req:Request, res:Response, next:NextFunction) => {
     const userReq = req.user;
@@ -161,6 +180,7 @@ const getUsers = asyncMiddleware(async (req:Request, res:Response, next:NextFunc
 export {
     registerUser,
     loginUser,
+    logoutUser,
     getUserInfo,
     getMyUser,
     updateUser,

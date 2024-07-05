@@ -7,8 +7,7 @@ import s from '../app/(auth)/layout.module.css';
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { fetchAPI } from "../services/api";
-import { LoginResponseBody } from "../../shared/types";
-import publicLoader  from "../services/publicLoader";
+import { UserDataResponse } from "../../shared/types";
 
 
 const LoginForm = ()=> {
@@ -29,27 +28,15 @@ const LoginForm = ()=> {
         e.preventDefault();
         const fetchUser = async () => {
             try {
-                const data: LoginResponseBody = await fetchAPI('/auth/login', {
+                const data: UserDataResponse = await fetchAPI('/auth/login', true, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        username: username,
-                        password: password,
-                    }),
+                    body: JSON.stringify({ username, password }),
                 });
-                if (typeof window !== 'undefined'){
-                    localStorage.setItem('token', data.token);
-                    // console.log("Login submitted", { username, password });
-                    notifyUserloginSuccess();
+                notifyUserloginSuccess();
+                router.push('/profile');
+                setTimeout(() => {
                     router.push('/profile');
-                    setTimeout(() => {
-                        router.push('/profile');
-                    }, 500);
-                }else{
-                    console.log('Window is undefined');
-                }
+                }, 500);
             } catch (error) {
                 notifyUserloginFailure();
                 console.error("Error when logging in:", error);
@@ -103,7 +90,6 @@ const LoginForm = ()=> {
                     className={s.loginLogo}
                     width={100}
                     height={100}
-                    loader={publicLoader}
                 />
                 <p>
                     Pixel <br /> Plates

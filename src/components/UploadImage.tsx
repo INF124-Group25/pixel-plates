@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import publicLoader from "@/services/publicLoader";
 
 interface UploadImageProps {
     onUpload: (location: string) => void;
@@ -53,7 +52,6 @@ export function UploadImage({
                     src={previewUrl}
                     alt="Preview"
                     style={{ width: "100px" }}
-                    loader={publicLoader}
                 />
             )}
         </>

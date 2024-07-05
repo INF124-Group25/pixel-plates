@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { getUserPicture, fetchAPI, getPictureWithKey } from "../../../services/api";
 import { TBusiness, TPostResponseData } from "../../../../shared/types";
 import { useRouter } from "next/navigation";
+import CloudFrontLoader from "../../../services/CloudFrontLoader"
 
 type TBusinessWithImage = TBusiness & { imageUrl: string, postId:string };
 
@@ -81,7 +82,7 @@ const ExplorePage = () => {
                     <div key={index} className={styles.card}>
                         <div className={styles.imageContainer}>
                             {result.imageUrl ? (
-                                <Image src={result.imageUrl} alt={result.business_name} width={140} height={100} onClick={() => navigateToRouter(result.postId)}/>
+                                <Image src={result.imageUrl} alt={result.business_name} width={140} height={100} onClick={() => navigateToRouter(result.postId)} loader={CloudFrontLoader}/>
                             ) : (
                                 <div className={styles.imagePlaceholder}></div> // Placeholder if no image found
                             )}

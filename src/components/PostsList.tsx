@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchAPI, getPictureWithKey, getPostPicture, getUserPicture } from '../services/api';
 import Image from 'next/image';
 import Link from 'next/link';
+import CloudFrontLoader from '@/services/CloudFrontLoader';
 
 
 interface Post {
@@ -29,7 +30,7 @@ const PostsList = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const postData: PostRequest = await fetchAPI('/test/user/erick/post'); // REPLACE WITH CURRENT USER
+                const postData: PostRequest = await fetchAPI('/test/user/erick/post', true); // REPLACE WITH CURRENT USER
                 // console.log("postData: ", postData)
 
                 const postsWithImages = await Promise.all(postData[0].map(async (post: Post) => {
@@ -58,6 +59,7 @@ const PostsList = () => {
                             height={100} 
                             objectFit="cover"
                             onClick={() => window.location.href = `/user/erick/post/${post.id}`}
+                            loader={CloudFrontLoader}
                         />       
                     </Link>
                 )

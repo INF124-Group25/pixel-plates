@@ -18,6 +18,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.588.0",
     "bcrypt-ts": "^5.0.2",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "drizzle-orm": "^0.30.10",
     "express": "^4.19.2",
@@ -28,6 +29,7 @@
     "tsx": "^4.15.2"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.7",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.6",

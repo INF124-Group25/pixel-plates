@@ -3,6 +3,7 @@
 import Link from "next/link";
 import style from "./page.module.css";
 import Image from "next/image";
+import CloudFrontLoader from "@/services/CloudFrontLoader";
 
 // const Context = createContext();
 
@@ -17,7 +18,7 @@ const FollowerCard: React.FC<{ src: string; name: string; bio: string }> = ({
             <div>
                 <Link href={`/user/${name}`} >
                     {/* <a> */}
-                    <Image src={'/'+src} alt={name} width={100} height={100} ></Image>
+                    <Image src={'/'+src} alt={name} width={100} height={100} loader={CloudFrontLoader}></Image>
                     {/* </a> */}
                 </Link>
                 <p>{name}</p>

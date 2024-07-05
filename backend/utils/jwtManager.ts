@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { JwtPayload } from '../types/types.js';
 
-const generate = (id:string) => jwt.sign({id}, process.env.JWT_SECRET!, {expiresIn: '2h'});
+const generate = (id:string, expiresIn:string='2h') => jwt.sign({id}, process.env.JWT_SECRET!, {expiresIn: expiresIn});
 
 const verify = (token:string): JwtPayload => jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
 // id: This is a private claim. In this case, it appears to be a UUID that uniquely identifies a user. 

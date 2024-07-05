@@ -1,33 +1,34 @@
 'use client';
 
 import Link from "next/link";
-import { useContext } from "react";
 import s from "../app/(general)/Header.module.css";
-import { Context } from "./UserContext";
-import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/AuthContext";
+import { useEffect } from "react";
 
 const HeaderLinks = () => {
-    const userContext = useContext(Context);
-    if (!userContext) {
-        throw new Error("context should be loaded within a context provider");
-    }
-    const { user, logout } = userContext;
-    const router = useRouter();
-    const logoutUser = () => {
-        logout();
-        router.push("/");
-    };
+    const { isAuthenticated, logout } = useAuth();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            console.log("User is authenticated");
+        }else{
+            console.log("User is not authenticated");
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+
 
     return (
         <nav className={s.navContainer}>
-            {user ? (
+            {isAuthenticated ? (
                 <>
                     <Link href="/explore">Explore</Link>
                     <Link href="/profile/create">Create</Link>
                     <Link href="/profile">Profile</Link>
                     <Link href="/feed">Feed</Link>
                     {/* <Link href="/login">Logout</Link> */}
-                    <button className={s.logoutButton} onClick={logoutUser}>Logout</button>
+                    <button className={s.logoutButton} onClick={() => logout()}>Logout</button>
                 </>
             ) : (
                 <>

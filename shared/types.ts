@@ -13,24 +13,37 @@ export type MyUserRequestBody = {
     token: string;
 };
 
-export type LoginResponseBody = {
+// export type LoginResponseBody = {
+//     id: string;
+//     username: string;
+//     email: string;
+//     bio: string | null;
+//     profile_image_URL: string | null;
+//     created_at: Date;
+//     // token: string;
+// };
+
+// export type RegisterResponseBody = {
+//     id: string;
+//     username: string;
+//     email: string;
+//     bio: string | null;
+//     profile_image_URL: string | null;
+//     created_at: Date;
+//     token: string;
+// };
+
+export type UserDataResponse = {
     id: string;
     username: string;
     email: string;
     bio: string | null;
     profile_image_URL: string | null;
     created_at: Date;
-    token: string;
 };
 
-export type RegisterResponseBody = {
-    id: string;
-    username: string;
-    email: string;
-    bio: string | null;
-    profile_image_URL: string | null;
-    created_at: Date;
-    token: string;
+export type UserAuthenticatedResponse = {
+    isAuthenticated: boolean;
 };
 
 export type UpdateUserRequestBody = {
@@ -45,15 +58,16 @@ export type PictureRequestBody = {
     id: string;
 };
 
-export type RequestUserProfile = {
-    id: string;
-    username: string;
-    email: string;
-    password: string;
-    bio: string | null;
-    profile_image_URL: string | null;
-    created_at: Date;
-};
+
+// export type RequestUserProfile = {
+//     id: string;
+//     username: string;
+//     email: string;
+//     password: string;
+//     bio: string | null;
+//     profile_image_URL: string | null;
+//     created_at: Date;
+// };
 
 export type TBusiness = {
     created_at: Date;
@@ -89,11 +103,11 @@ export type GetAllPostResponseData = {
     post_url: string | null;
 };
 
-export type UserResponseData = {
-    id: string;
-    username: string;
-    email: string;
-    bio: string | null;
-    profile_image_URL: string | null;
-    created_at: Date;
-};
+// export type UserResponseData = {
+//     id: string;
+//     username: string;
+//     email: string;
+//     bio: string | null;
+//     profile_image_URL: string | null;
+//     created_at: Date;
+// };

@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
+import cookieParser from 'cookie-parser';
 import {
     authRoutes,
     userRoutes,
@@ -11,24 +12,30 @@ import {
 import { endClient } from "./db/db";
 import errorMiddleware from "./middleware/errorMiddleware";
 import { closeS3Client } from "./bucket/s3";
-import nextapp from "../index.js";
 
 const startServer = async () => {
     const app = express();
-    app.use(cors());
+    app.use(cors({origin: ['http://localhost:3000'], credentials: true}));
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
+    app.use(cookieParser());
+    
     const port = process.env.PORT || 5001;
 
     app.use("/api/auth", authRoutes);
     app.use("/api/user", userRoutes);
     app.use("/api/post", postRoutes);
     app.use("/api/test", testRoutes);
-    app.use("/", nextJSHandler);
+    if(process.env.NODE_ENV === 'production'){
+        app.use("/", nextJSHandler);
+    }
 
     app.use(errorMiddleware);
 
-    await nextapp.prepare();
+    if(process.env.NODE_ENV == 'production'){
+        const nextapp = require('../index.js');
+        await nextapp.prepare();
+    }
 
     const server = app.listen(port, () => {
         console.log(`Example app listening on port ${port}`);

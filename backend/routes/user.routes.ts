@@ -6,20 +6,13 @@ import { pictureResults, upload } from "../bucket/s3";
 
 const router = express.Router();
 
-// router.route('/me')
-//     .get(authMiddleware, getMyUser)
-//     ;
-
-
-// router.post('/image', authMiddleware, upload.single('profile_picture'), pictureResults);
-router.post('/image/:id', upload.single('profile_picture'), pictureResults);
-router.get('/image/:id', getProfilePhoto);
 router.get('/', getUsers);
-
 router.route('/profile')
     .get(authMiddleware, getMyUser)
     .put(authMiddleware, updateUser);
-
+// router.post('/image', authMiddleware, upload.single('profile_picture'), pictureResults);
+router.post('/image/:id', upload.single('profile_picture'), pictureResults);
+router.get('/image/:id', getProfilePhoto);
 
 // router.route('/:id')
 //     .put(authMiddleware, updateUser)

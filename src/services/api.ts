@@ -1,19 +1,28 @@
 "use client";
 import {
-    LoginResponseBody,
-    RequestUserProfile,
     UpdateUserRequestBody,
+    UserDataResponse,
 } from "../../shared/types";
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_URL
     ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api`
     : "/api";
-const userHeader = {
-    "Content-Type": "application/json",
-    Authorization: "Bearer " + window.localStorage.getItem("token"),
-};
-export const fetchAPI = async (url: string, options = {}) => {
-    const response = await fetch(`${baseUrl}${url}`, options);
+
+export const fetchAPI = async (url: string, isJson:boolean, options = {} ) => {
+    // const isDevelopment = process.env.NEXT_PUBLIC_BACKEND_URL !== undefined;
+    const isDevelopment = true;
+    type HeadersInit = Headers | string[][] | Record<string, string>;
+    const jsonHeader: HeadersInit = {
+        'Content-Type': 'application/json'
+    };
+    const mergedOptions = {
+        ...options, 
+        ...(isJson && { headers: jsonHeader }),
+        ...(isDevelopment && { credentials: 'include' as RequestCredentials })
+    };
+    // console.log('mergedOptions:', mergedOptions); // TESTING
+    const response = await fetch(`${baseUrl}${url}`, mergedOptions);
+    // console.log('response:', response); // TESTING
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -22,9 +31,7 @@ export const fetchAPI = async (url: string, options = {}) => {
 
 export const fetchUserProfile = async () => {
     try {
-        const data: RequestUserProfile = await fetchAPI("/user/profile", {
-            headers: userHeader,
-        });
+        const data: UserDataResponse = await fetchAPI("/user/profile", true);
         // console.log('data:', data); // TESTING
         return data;
     } catch (error) {
@@ -36,9 +43,8 @@ export const updateUserProfile = async (
     newUserRequest: UpdateUserRequestBody
 ) => {
     try {
-        const data: LoginResponseBody = await fetchAPI(`/user/profile`, {
+        const data: UserDataResponse = await fetchAPI(`/user/profile`, true, {
             method: "PUT",
-            headers: userHeader,
             body: JSON.stringify(newUserRequest),
         });
         // console.log('data:', data); // TESTING
@@ -104,7 +110,7 @@ export const uploadPicture = async (
     // const buffer = Buffer.from(bytes);
 
     const url = isPost ? `/post/image/${id}` : `/user/image/${id}`;
-    const response = await fetchAPI(url, {
+    const response = await fetchAPI(url, false, {
         method: "POST",
         // headers: userHeader,
         body: formData,

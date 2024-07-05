@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import styles from "./layout.module.css";
 import { useEffect, useState } from "react";
-import publicLoader from "../../../services/publicLoader";
 import { fetchAPI } from "../../../services/api";
 
 
@@ -57,7 +56,6 @@ const ProfileNav = () => {
                         alt="default user"
                         width={125}
                         height={125}
-                        loader={publicLoader}
                     />
                     {pathname === `/user/${username}` && (
                         <>

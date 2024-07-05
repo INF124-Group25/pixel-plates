@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import "../globals.css";
 import Header from "../../app/(general)/Header";
 import Footer from "../../app/(general)/Footer";
-import dynamic from "next/dynamic";
-const UserContext = dynamic(() => import('../../components/UserContext'), { ssr: false })
+import { AuthProvider } from "@/components/AuthContext";
+/* 
+for use with dynamic import (ssr: false)
+// import dynamic from "next/dynamic";
+// const AuthContext = dynamic(() => import('../../components/AuthContext'), { ssr: false })
+*/
 
-
-// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: "PixelPlates",
@@ -24,11 +26,11 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <UserContext>
+                <AuthProvider>
                     <Header />
                     {children}
                     <Footer />
-                </UserContext>
+                </AuthProvider>
             </body>
         </html>
     );

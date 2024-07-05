@@ -1,7 +1,7 @@
-'use client'
-import { ImageLoader } from 'next/image';
+// 'use client'
+// import { ImageLoader } from 'next/image';
+// import { ImageLoaderProps } from 'next/image';
 
-const publicLoader:ImageLoader = ({ src, width, quality }) => {
-    return `${src}`;
-}
-export default publicLoader;
+// const publicLoader:ImageLoader = ({ src, width, quality }:ImageLoaderProps) => src;
+
+// export default publicLoader;

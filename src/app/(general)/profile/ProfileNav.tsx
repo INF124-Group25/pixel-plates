@@ -4,20 +4,15 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import styles from "./layout.module.css";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getUserPicture, getPictureWithKey } from "../../../services/api";
-import { Context } from '../../../components/UserContext';
+import { useAuth } from '@/components/AuthContext';
 import { TrophySpin } from "react-loading-indicators";
+import CloudFrontLoader from "@/services/CloudFrontLoader";
 
 
 const ProfileNav = () => {
-    const userContext = useContext(Context);
-    if(!userContext){
-        throw new Error('context should be loaded within a context provider');
-    }
-
-    const {user, loading, login, setLoading, redirectToLogin} = userContext;
-
+    const {isAuthenticated, fetchUserProfile, loading } = useAuth();
     const [name, setName] = useState('null');
     const [description, setDescription] = useState('null');
     const defaultImage = getUserPicture('default-user.png');
@@ -30,20 +25,18 @@ const ProfileNav = () => {
     
     useEffect(()=>{
         const fetchData = async () => {
-            if(loading)return;
+            if(loading || !isAuthenticated)return;
+            const user = await fetchUserProfile();
             if(user) {
                 setName(user.username);
                 setDescription(user.bio || '');
-                console.log('profile layout pic: ' + getPictureWithKey(user.profile_image_URL!));//TESTING
+                // console.log('profile layout pic: ' + getPictureWithKey(user.profile_image_URL!));//TESTING
                 setImage(user.profile_image_URL ? getPictureWithKey(user.profile_image_URL) : defaultImage);
-            }else{
-                redirectToLogin();
-                console.log('user is null');// TESTING
             }
         };
         fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[user]);
+
+    },[loading, isAuthenticated, fetchUserProfile, defaultImage]);
 
     if(loading){
         return (
@@ -62,6 +55,7 @@ const ProfileNav = () => {
                         alt="default user"
                         width={125}
                         height={125}
+                        loader={CloudFrontLoader}
                     />
                     <h3>{name}</h3>
                     <p>{description}</p>

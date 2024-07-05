@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import Image from "next/image";
 import { useEffect, useState } from 'react';
 import { fetchAPI, getPictureWithKey } from "../../../../../../services/api";
+import CloudFrontLoader from "@/services/CloudFrontLoader";
 
 
 export type PostParams = {
@@ -70,6 +71,7 @@ const PostDetails = ({params} : {params: PostParams}) => {
                         alt="default user"
                         width={125}
                         height={125}
+                        loader={CloudFrontLoader}
                     />
                     </div>
                   <div style={{ borderBottom: '1px solid black' }}></div>
